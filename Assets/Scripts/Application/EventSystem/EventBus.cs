@@ -1,74 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Interfaces.EventSystem;
-using Domain.Events.Common;
+using Domain.Models.Common;
 
 namespace Application.EventSystem
 {
     public class EventBus : IEventBus
     {
-        private readonly Dictionary<Type, List<Delegate>> _handlers = new ();
-
-        public void Publish<T>(T domainEvent) where T : BaseEvent
+        private readonly Dictionary<Type, List<Delegate>> _handlers = new();
+        
+        public void Publish(BaseEvent domainEvent)
         {
-            if (domainEvent == null) {
+            if (domainEvent == null)
                 throw new ArgumentNullException(nameof(domainEvent));
-            }
 
-            var eventType = typeof(T);
+            var eventType = domainEvent.GetType();
+
             if (_handlers.TryGetValue(eventType, out var handlers))
             {
-                // Create a copy to avoid modification during iteration
-                var handlersCopy = new List<Delegate>(handlers);
-                foreach (var handler in handlersCopy)
+                var copy = new List<Delegate>(handlers);
+                foreach (var handler in copy)
                 {
-                    ((Action<T>)handler)(domainEvent);
+                    handler.DynamicInvoke(domainEvent);
                 }
             }
         }
 
-        public void Publish<T>(IReadOnlyCollection<T> domainEvents) where T : BaseEvent
+        public void Publish(IEnumerable<BaseEvent> domainEvents)
         {
-            foreach (var domainEvent in domainEvents)
-            {
-                Publish(domainEvent);
-            }
+            foreach (var e in domainEvents)
+                Publish(e);
         }
 
         public void Subscribe<T>(Action<T> handler) where T : BaseEvent
         {
-            if (handler == null) {
-                throw new ArgumentNullException(nameof(handler));
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
+
+            var type = typeof(T);
+            if (!_handlers.TryGetValue(type, out var list))
+            {
+                list = new List<Delegate>();
+                _handlers[type] = list;
             }
 
-            var eventType = typeof(T);
-            if (!_handlers.TryGetValue(eventType, out var handlers))
-            {
-                handlers = new List<Delegate>();
-                _handlers[eventType] = handlers;
-            }
-
-            if (!handlers.Contains(handler))
-            {
-                handlers.Add(handler);
-            }
+            if (!list.Contains(handler))
+                list.Add(handler);
         }
 
         public void Unsubscribe<T>(Action<T> handler) where T : BaseEvent
         {
-            if (handler == null) {
-                throw new ArgumentNullException(nameof(handler));
-            }
+            if (handler == null) throw new ArgumentNullException(nameof(handler));
 
-            var eventType = typeof(T);
-            if (_handlers.TryGetValue(eventType, out var handlers))
+            var type = typeof(T);
+            if (_handlers.TryGetValue(type, out var list))
             {
-                handlers.Remove(handler);
-
-                if (handlers.Count == 0)
-                {
-                    _handlers.Remove(eventType);
-                }
+                list.Remove(handler);
+                if (list.Count == 0)
+                    _handlers.Remove(type);
             }
         }
     }
