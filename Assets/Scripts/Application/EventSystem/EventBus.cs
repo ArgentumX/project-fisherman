@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Application.Interfaces.EventSystem;
 using Domain.Events.Common;
 
-namespace Infrastructure.EventSystem
+namespace Application.EventSystem
 {
     public class EventBus : IEventBus
     {
