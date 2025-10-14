@@ -1,5 +1,4 @@
 ﻿using Application.EventSystem;
-using Application.Interfaces.EventSystem;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Infrastructure.Repositories;

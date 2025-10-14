@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.EventSystem;
+﻿using Application.EventSystem;
 using Application.Interfaces.Usecases;
 using Domain.Models.Entities.Player.Events;
 using UnityEngine;

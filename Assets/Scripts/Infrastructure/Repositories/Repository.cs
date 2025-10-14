@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.EventSystem;
+﻿using Application.EventSystem;
 using Domain.Models.Common;
 
 namespace Infrastructure.Repositories

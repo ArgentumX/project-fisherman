@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Domain.Models.Common;
 
-namespace Application.Interfaces.EventSystem
+namespace Application.EventSystem
 {
     public interface IEventBus
     {

@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.EventSystem;
+﻿using Application.EventSystem;
 using Application.Interfaces.Repositories;
 using Domain.Models.Entities.Player;
 using Zenject;
