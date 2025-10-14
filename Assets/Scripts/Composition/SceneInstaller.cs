@@ -15,8 +15,13 @@ namespace Composition
         public override void InstallBindings()
         {
             Container.Bind<IEventBus>().To<EventBus>().AsSingle();
+            
             Container.Bind<IPlayerRepository>().To<PlayerRepository>().AsTransient();
+            Container.Bind<IDayCycleRepository>().To<DayCycleRepository>().AsTransient();
+            
             Container.Bind<IPlayerUsecase>().To<PlayerUsecase>().AsTransient();
+            Container.Bind<IDayCycleUsecase>().To<DayCycleUsecase>().AsTransient().NonLazy();
+            
             Container.Bind<ITickProvider>().To<TickProvider>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
         }
     }

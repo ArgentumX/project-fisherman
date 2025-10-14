@@ -1,5 +1,6 @@
 ﻿using Application.EventSystem;
 using Domain.Models.Common;
+using Zenject;
 
 namespace Infrastructure.Repositories
 {
