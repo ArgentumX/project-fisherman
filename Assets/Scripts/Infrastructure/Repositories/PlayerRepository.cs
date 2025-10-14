@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories
         [Inject]
         public PlayerRepository(IEventBus eventBus) : base(eventBus)
         {
-            _player = new Player(new PlayerState() { Health = 100 });
+            _player = new Player(new PlayerState { Health = 100, Stamina = 100, MaxStamina = 100});
             // Important - EventBus hook, requires unsubscribe (UnsubscribeModel) on destroy
             SubscribeModel(_player);
         }

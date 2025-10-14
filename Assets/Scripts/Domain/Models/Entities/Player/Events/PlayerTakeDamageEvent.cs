@@ -2,12 +2,10 @@
 
 namespace Domain.Models.Entities.Player.Events
 {
-    public class PlayerTakeDamageEvent : BaseEvent
+    public class PlayerTakeDamageEvent : PlayerEvent
     {
-        public PlayerState State { get; private set; }
-        public PlayerTakeDamageEvent(object sender, PlayerState state) : base(sender)
+        public PlayerTakeDamageEvent(object sender, PlayerState playerState) : base(sender, playerState)
         {
-            State = state;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Presentation
 
         private void UpdateSlider(PlayerTakeDamageEvent e)
         {
-            _slider.value = (float) e.State.Health / 100;
+            _slider.value = (float) e.PlayerState.Health / 100;
         }
         
     }
