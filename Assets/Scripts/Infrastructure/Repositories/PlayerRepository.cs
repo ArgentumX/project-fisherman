@@ -10,16 +10,17 @@ namespace Infrastructure.Repositories
         private Player _player;
         
         [Inject]
-        public PlayerRepository(IEventBus eventBus) : base(eventBus)
-        {
-            _player = new Player(new PlayerState { Health = 100, Stamina = 100, MaxStamina = 100});
-            // Important - EventBus hook, requires unsubscribe (UnsubscribeModel) on destroy
-            SubscribeModel(_player);
+        public PlayerRepository(IEventBus eventBus) : base(eventBus) {
         }
 
-        public Player GetCurrentPlayer() => _player;
+        public Player Load()
+        {
+            _player = new Player(new PlayerState { Health = 100, Stamina = 100, MaxStamina = 100});
+            SubscribeOnModel(_player);
+            return _player;
+        }
 
-        public void SavePlayer(Player player)
+        public void Save(Player player)
         {
             throw new System.NotImplementedException();
         }

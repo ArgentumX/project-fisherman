@@ -1,12 +1,10 @@
 ﻿using Application.EventSystem;
 using Domain.Models.Common;
-using Zenject;
 
 namespace Infrastructure.Repositories
 {
     public abstract class Repository
     {
-        
         private IEventBus _eventBus;
         
         protected Repository(IEventBus eventBus)
@@ -15,12 +13,12 @@ namespace Infrastructure.Repositories
         }
 
         // Subscribe all new models
-        protected void SubscribeModel(BaseModel model)
+        protected void SubscribeOnModel(BaseModel model)
         {
             model.OnAddDomainEvent += HandleAddDomainEvent;
         }
 
-        protected void UnsubscribeModel(BaseModel model)
+        protected void UnsubscribeFromModel(BaseModel model)
         {
             model.OnAddDomainEvent -= HandleAddDomainEvent;
         }

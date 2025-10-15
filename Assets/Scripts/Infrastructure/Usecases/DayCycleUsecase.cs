@@ -19,7 +19,7 @@ namespace Infrastructure.Usecases
         {
             _eventBus = eventBus;
             _dayCycleRepository = dayCycleRepository;
-            _dayCycle = _dayCycleRepository.LoadDayCycle();
+            _dayCycle = _dayCycleRepository.Load();
             
             
             _eventBus.Subscribe<LogicTickEvent>(OnLogicTick);

@@ -2,9 +2,7 @@
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IPlayerRepository
+    public interface IPlayerRepository : IRepository<Player>
     {
-        Player GetCurrentPlayer();
-        void SavePlayer(Player player);
     }
 }

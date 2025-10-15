@@ -2,9 +2,7 @@
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IDayCycleRepository
+    public interface IDayCycleRepository : IRepository<DayCycle>
     {
-        DayCycle LoadDayCycle();
-        void SaveDayCycle(DayCycle dayCycle);
     }
 }

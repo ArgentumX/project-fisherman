@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
+using Domain.Models.Entities.Player;
 using Zenject;
 
 namespace Infrastructure.Usecases
@@ -7,6 +8,7 @@ namespace Infrastructure.Usecases
     public class PlayerUsecase : Usecase, IPlayerUsecase
     {
         private IPlayerRepository _playerRepository;
+        private Player _player;
 
         [Inject]
         public PlayerUsecase(IPlayerRepository repository)
@@ -16,7 +18,7 @@ namespace Infrastructure.Usecases
             
         public void TakeDamage(int amount)
         {
-            _playerRepository.GetCurrentPlayer().TakeDamage(amount);
+            _player.TakeDamage(amount);
         }
     }
 }

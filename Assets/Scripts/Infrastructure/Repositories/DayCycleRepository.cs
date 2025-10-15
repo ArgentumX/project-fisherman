@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories
         public DayCycleRepository(IEventBus eventBus) : base(eventBus) {
         }
 
-        public DayCycle LoadDayCycle()
+        public DayCycle Load()
         {
             DayCycleState state = new DayCycleState
             {   
@@ -21,11 +21,11 @@ namespace Infrastructure.Repositories
                 TimeOfDay = TimeOfDay.Morning
             };
             DayCycle dayCycle = new DayCycle(state);
-            SubscribeModel(dayCycle);
+            SubscribeOnModel(dayCycle);
             return dayCycle;
         }
 
-        public void SaveDayCycle(DayCycle dayCycle)
+        public void Save(DayCycle dayCycle)
         {
             throw new System.NotImplementedException();
         }
