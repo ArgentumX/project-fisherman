@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Presentation.Player
+namespace Presentation.Player.UI
 { 
     [RequireComponent(typeof(Slider))]
     public class StaminaSliderView : MonoBehaviour

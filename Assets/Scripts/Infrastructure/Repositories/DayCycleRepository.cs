@@ -6,28 +6,18 @@ using Zenject;
 
 namespace Infrastructure.Repositories
 {
-    public class DayCycleRepository : Repository, IDayCycleRepository
+    public class DayCycleRepository : IDayCycleRepository
     {
-        [Inject]
-        public DayCycleRepository(IEventBus eventBus) : base(eventBus) {
-        }
-
-        public DayCycle Load()
+        private DayCycle _dayCycle;
+        
+        public DayCycle Get()
         {
-            DayCycleState state = new DayCycleState
-            {   
-                Time = 500f,
-                DayLength = 1200f,
-                TimeOfDay = TimeOfDay.Morning
-            };
-            DayCycle dayCycle = new DayCycle(state);
-            SubscribeOnModel(dayCycle);
-            return dayCycle;
+            return _dayCycle;
         }
 
         public void Save(DayCycle dayCycle)
         {
-            throw new System.NotImplementedException();
+            _dayCycle = dayCycle;
         }
     }
 }

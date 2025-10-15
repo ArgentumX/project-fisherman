@@ -1,27 +1,28 @@
 ﻿using Application.EventSystem;
 using Domain.Models.Common;
+using Zenject;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.EventSystem
 {
-    public abstract class Repository
+    public class DomainEventsPublisher : IDomainEventsPublisher
     {
         private IEventBus _eventBus;
-        
-        protected Repository(IEventBus eventBus)
+        [Inject]
+        public DomainEventsPublisher(IEventBus eventBus)
         {
             _eventBus = eventBus;
         }
-
-        // Subscribe all new models
-        protected void SubscribeOnModel(BaseModel model)
+        
+        public void Register(BaseModel model)
         {
             model.OnAddDomainEvent += HandleAddDomainEvent;
         }
 
-        protected void UnsubscribeFromModel(BaseModel model)
+        public void Unregister(BaseModel model)
         {
             model.OnAddDomainEvent -= HandleAddDomainEvent;
         }
+
         private void HandleAddDomainEvent(BaseModel model)
         {
             _eventBus.Publish(model.DomainEvents);

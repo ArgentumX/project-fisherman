@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Application.EventSystem;
 using Domain.Models.Common;
 
-namespace Application.EventSystem
+namespace Infrastructure.EventSystem
 {
     public class EventBus : IEventBus
     {

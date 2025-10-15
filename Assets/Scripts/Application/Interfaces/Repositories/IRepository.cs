@@ -2,7 +2,7 @@
 {
     public interface IRepository<T>
     {
-        T Load();
+        T Get();
         void Save(T target);
     }
     
