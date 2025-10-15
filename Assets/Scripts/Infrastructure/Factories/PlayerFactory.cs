@@ -16,7 +16,7 @@ namespace Infrastructure.Factories
             {
                 Health = 100,
                 MaxStamina = 100,
-                Stamina = 100,
+                Stamina = 50,
             };
             return Create(state);
         }

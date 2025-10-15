@@ -16,6 +16,8 @@ namespace Infrastructure.EventSystem
         public void Register(BaseModel model)
         {
             model.OnAddDomainEvent += HandleAddDomainEvent;
+            if (model.DomainEvents.Count > 0)
+                HandleAddDomainEvent(model);
         }
 
         public void Unregister(BaseModel model)

@@ -22,7 +22,9 @@ namespace Infrastructure.Usecases
         {
             if (!IsPossibleToSleep())
                 return false;
-            
+
+            var player = _playerRepository.Get();
+            player.RestoreStamina(this, player.MaxStamina);
             _dayCycleRepository.Get().SetTimeOfDay(TimeOfDay.Morning);
             return true;
         }

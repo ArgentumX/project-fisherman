@@ -13,7 +13,7 @@ namespace Presentation.Sleep
         private ISleepUsecase _playerSleepUsecase;
             
         [Inject]
-        private void Constructor(ISleepUsecase playerSleepUsecase)
+        private void Construct(ISleepUsecase playerSleepUsecase)
         {
             _playerSleepUsecase = playerSleepUsecase;
         }

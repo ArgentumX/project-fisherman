@@ -24,6 +24,11 @@ namespace Infrastructure.Usecases
             _playerRepository.Get().TakeDamage(amount);
         }
 
+        public PlayerState GetState()
+        {
+            return _playerRepository.Get().GetState();
+        }
+
         private void CreatePlayer()
         {
             var player = _playerFactory.CreateDefault();

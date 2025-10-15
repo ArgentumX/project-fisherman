@@ -2,10 +2,11 @@
 {
     public interface IStaminaConsumer
     {
-       bool TryConsumeStamina(float amount); 
-       void RestoreStamina(float amount);
+       bool TryConsumeStamina(object sender, float amount); 
+       void RestoreStamina(object sender, float amount);
+       void SetStamina(object sender, float amount);
        bool HasStamina(float amount);
        float Stamina { get; }
-       float StaminaMax { get; }
+       float MaxStamina { get; }
     }
 }
