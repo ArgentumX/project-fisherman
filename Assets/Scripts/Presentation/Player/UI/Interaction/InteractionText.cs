@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Presentation.Player.UI.Interaction
+namespace Presentation.PlayerPresentation.UI.Interaction
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class InteractionText : MonoBehaviour

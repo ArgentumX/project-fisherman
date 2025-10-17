@@ -9,14 +9,11 @@ namespace Infrastructure.Usecases
     public class PlayerUsecase : IPlayerUsecase
     {
         private IPlayerRepository _playerRepository;
-        private IPlayerFactory _playerFactory;
 
         [Inject]
-        public PlayerUsecase(IPlayerRepository repository, IPlayerFactory playerFactory)
+        public PlayerUsecase(IPlayerRepository repository)
         {
             _playerRepository = repository;
-            _playerFactory = playerFactory;
-            CreatePlayer();
         }
             
         public void TakeDamage(int amount)
@@ -24,15 +21,6 @@ namespace Infrastructure.Usecases
             _playerRepository.Get().TakeDamage(amount);
         }
 
-        public PlayerState GetState()
-        {
-            return _playerRepository.Get().GetState();
-        }
 
-        private void CreatePlayer()
-        {
-            var player = _playerFactory.CreateDefault();
-            _playerRepository.Save(player);
-        }
     }
 }

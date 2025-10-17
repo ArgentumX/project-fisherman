@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Presentation.Player.UI.Notebook.Inventory
+namespace Presentation.PlayerPresentation.UI.Notebook.Inventory
 {
     public class InventoryUI : MonoBehaviour
     {

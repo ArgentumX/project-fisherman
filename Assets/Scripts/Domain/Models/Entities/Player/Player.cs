@@ -12,64 +12,86 @@ namespace Domain.Models.Entities.Player
 
         public float Stamina => _stamina;
         public float MaxStamina => _maxStamina;
+        
+        public event Action<PlayerCreatedEvent> OnPlayerCreated;
+        public event Action<PlayerTakeDamageEvent> OnPlayerTakeDamage;
+        public event Action<PlayerNotEnoughStaminaEvent> OnPlayerNotEnoughStamina;
+        public event Action<PlayerStaminaChangedEvent> OnPlayerStaminaChanged;
+
         public Player(PlayerState state)
         {
             _health = state.Health;
             _stamina = state.Stamina;
             _maxStamina = state.MaxStamina;
-            AddDomainEvent(new PlayerCreatedEvent(this, GetState()));
+
+            var createdEvent = new PlayerCreatedEvent(this, GetState());
+            OnPlayerCreated?.Invoke(createdEvent);
         }
-        
+
         public void TakeDamage(int amount)
         {
             _health -= amount;
-            if (_health <= 0) {
+            if (_health <= 0)
+            {
                 _health = 0;
-                // TODO Death event
+                // TODO Death event (пока не реализован)
             }
-            AddDomainEvent(new PlayerTakeDamageEvent(null, GetState()));
+
+            var damageEvent = new PlayerTakeDamageEvent(null, GetState());
+            OnPlayerTakeDamage?.Invoke(damageEvent);
         }
 
-        public bool TryConsumeStamina(object sender,float amount)
+        public bool TryConsumeStamina(object sender, float amount)
         {
-            if (amount < 0) {
+            if (amount < 0)
+            {
                 throw new ArgumentException("Amount must be greater or equal than zero");
             }
-            if (!HasStamina(amount)) {
-                AddDomainEvent(new PlayerNotEnoughtStaminaEvent(sender, GetState()));
+
+            if (!HasStamina(amount))
+            {
+                var notEnoughEvent = new PlayerNotEnoughStaminaEvent(sender, GetState());
+                OnPlayerNotEnoughStamina?.Invoke(notEnoughEvent);
                 return false;
             }
+
             _stamina -= amount;
-            AddDomainEvent(new PlayerStaminaChangedEvent(sender, GetState()));
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
             return true;
         }
 
         public void RestoreStamina(object sender, float amount)
         {
             if (amount <= 0) {
-                throw new ArgumentException("Amount must be greater or equal than zero");
+                throw new ArgumentException("Amount must be greater than zero");
             }
+
             _stamina = Math.Min(_stamina + amount, _maxStamina);
-            AddDomainEvent(new PlayerStaminaChangedEvent(sender, GetState()));
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
         }
 
-        public void SetStamina(object sender,float amount)
+        public void SetStamina(object sender, float amount)
         {
-            if (amount <= 0) {
+            if (amount < 0) {
                 throw new ArgumentException("Amount must be greater or equal than zero");
             }
-            _stamina = Math.Max(amount, _maxStamina);
-            AddDomainEvent(new PlayerStaminaChangedEvent(sender, GetState()));
+            _stamina = Math.Min(amount, _maxStamina);
+
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
         }
 
         public bool HasStamina(float amount)
         {
-            if (amount <= 0) {
-                throw new ArgumentException("Amount must be greater or equal than zero");
+            if (amount <= 0)
+            {
+                throw new ArgumentException("Amount must be greater than zero");
             }
             return _stamina >= amount;
         }
-        
+
         public PlayerState GetState()
         {
             return new PlayerState

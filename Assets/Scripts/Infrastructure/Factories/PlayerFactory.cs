@@ -1,15 +1,11 @@
-﻿using Application.EventSystem;
-using Application.Interfaces.Factories;
+﻿using Application.Interfaces.Factories;
 using Domain.Models.Entities.Player;
 
 namespace Infrastructure.Factories
 {
-    public class PlayerFactory : DomainEventsPublishFactory, IPlayerFactory
+    public class PlayerFactory : IPlayerFactory
     {
-        public PlayerFactory(IDomainEventsPublisher domainEventsPublisher) : base(domainEventsPublisher)
-        {
-        }
-
+        private PlayerFactory() { }
         public Player CreateDefault()
         {
             var state = new PlayerState()
@@ -24,7 +20,6 @@ namespace Infrastructure.Factories
         public Player Create(PlayerState state)
         {
             var player = new Player(state);
-            RegisterModel(player);
             return player;
         }
     }

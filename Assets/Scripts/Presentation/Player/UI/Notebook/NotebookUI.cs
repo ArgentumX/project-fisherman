@@ -1,9 +1,9 @@
-﻿using Presentation.Player.UI.Notebook.Inventory;
-using Presentation.Player.UI.Notebook.Map;
-using Presentation.Player.UI.Notebook.Quests;
+﻿using Presentation.PlayerPresentation.UI.Notebook.Inventory;
+using Presentation.PlayerPresentation.UI.Notebook.Map;
+using Presentation.PlayerPresentation.UI.Notebook.Quests;
 using UnityEngine;
 
-namespace Presentation.Player.UI.Notebook
+namespace Presentation.PlayerPresentation.UI.Notebook
 {
     public class NotebookUI : MonoBehaviour
     {

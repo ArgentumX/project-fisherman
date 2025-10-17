@@ -2,11 +2,12 @@
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Enums;
+using Domain.Models.Entities.Player;
 using Zenject;
 
 namespace Infrastructure.Usecases
 {
-    public class PlayerSleepUsecase : ISleepUsecase
+    public class PlayerSleepUsecase : IPlayerSleepUsecase
     {
         private IDayCycleRepository _dayCycleRepository;
         private IPlayerRepository _playerRepository;
@@ -18,18 +19,17 @@ namespace Infrastructure.Usecases
             _playerRepository = playerRepository;
         }
         
-        public bool TrySleep()
+        public bool TrySleep(Player player)
         {
-            if (!IsPossibleToSleep())
+            if (!IsPossibleToSleep(player))
                 return false;
-
-            var player = _playerRepository.Get();
+            
             player.RestoreStamina(this, player.MaxStamina);
             _dayCycleRepository.Get().SetTimeOfDay(TimeOfDay.Morning);
             return true;
         }
 
-        public bool IsPossibleToSleep()
+        public bool IsPossibleToSleep(Player player)
         {
             var timeOfDay = _dayCycleRepository.Get().TimeOfDay;
             if (timeOfDay is TimeOfDay.Evening or TimeOfDay.Night) {

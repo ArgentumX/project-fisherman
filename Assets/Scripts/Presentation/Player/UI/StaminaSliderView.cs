@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Application.EventSystem;
-using Application.Interfaces.Repositories;
+﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Models.Entities.Player;
 using Domain.Models.Entities.Player.Events;
@@ -8,31 +6,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Presentation.Player.UI
+namespace Presentation.PlayerPresentation.UI
 { 
     [RequireComponent(typeof(Slider))]
     public class StaminaSliderView : MonoBehaviour
     {
-        [Inject] IEventBus _eventBus;
+        // TODO what if we load scriptable object (PlayerState) which loads player state
+        private Player _model;
         private IPlayerUsecase _playerUsecase;
         [SerializeField] private Slider _slider;
 
         [Inject]
-        private void Construct(IEventBus eventBus, IPlayerUsecase playerUsecase)
+        private void Construct(IPlayerUsecase playerUsecase, IPlayerRepository repository)
         {
-            _eventBus = eventBus;
             _playerUsecase = playerUsecase;
+            _model = repository.Get();
         }
         
         void OnEnable()
         {
-            _eventBus.Subscribe<PlayerStaminaChangedEvent>(OnStaminaChanged);
-            UpdateSlider(_playerUsecase.GetState());
+            _model.OnPlayerStaminaChanged += OnStaminaChanged;
+            UpdateSlider(_model.GetState());
         }
 
         void OnDisable()
         {
-            _eventBus.Unsubscribe<PlayerStaminaChangedEvent>(OnStaminaChanged);
+            _model.OnPlayerStaminaChanged -= OnStaminaChanged;
         }
         
         private void OnValidate()
@@ -41,11 +40,7 @@ namespace Presentation.Player.UI
                 _slider = GetComponent<Slider>();
             }
         }
-
-        private void OnPlayerCreated(PlayerCreatedEvent e)
-        {
-            UpdateSlider(e.PlayerState);
-        }
+        
         private void OnStaminaChanged(PlayerStaminaChangedEvent e)
         {
             UpdateSlider(e.PlayerState);

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Presentation.Player.UI.Notebook.Quests
+namespace Presentation.PlayerPresentation.UI.Notebook.Quests
 {
     public class QuestsUI : MonoBehaviour
     {

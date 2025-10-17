@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Presentation.Player.Controllers
+namespace Presentation.PlayerPresentation.Controllers
 {
     [RequireComponent(typeof(CharacterController))]
     public class MovementController : MonoBehaviour

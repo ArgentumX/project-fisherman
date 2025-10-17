@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Presentation.Player.UI.Notebook.Map
+namespace Presentation.PlayerPresentation.UI.Notebook.Map
 {
     public class MapUI : MonoBehaviour
     {

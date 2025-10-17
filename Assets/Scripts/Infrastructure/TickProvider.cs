@@ -1,37 +1,29 @@
-﻿using Application.EventSystem;
-using Application.Interfaces;
+﻿using System;
+using Application.Interfaces.EventProviders;
 using Domain.Models.Common.Events;
 using UnityEngine;
-using Zenject;
 
 namespace Infrastructure
 {
     public class TickProvider : MonoBehaviour, ITickProvider
     {
-        private IEventBus _eventBus;
+        public event Action<LogicTickEvent> OnLogicTick;
+        public event Action<ViewTickEvent> OnViewTick;
+        
         private const float LogicInterval = 0.1f;
         private float _logicTimer = 0;
-        public TickProvider(IEventBus eventBus)
-        {
-            _eventBus = eventBus;
-        }
         
-        [Inject]  
-        public void Construct(IEventBus eventBus)
-        {
-            _eventBus = eventBus;
-        }
         
         public void ProvideLogicTick(float deltaTime)
         { 
             var tick = new LogicTickEvent(this, deltaTime);
-            _eventBus.Publish(tick);
+            OnLogicTick?.Invoke(tick);
         }
 
         public void ProvideViewTick(float deltaTime)
         {
             var tick = new ViewTickEvent(this, deltaTime);
-            _eventBus.Publish(tick);
+            OnViewTick?.Invoke(tick);
         }
 
         private void Update()

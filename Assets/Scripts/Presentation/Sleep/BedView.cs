@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces.Usecases;
+using Domain.Models.Common;
+using Domain.Models.Entities.Player;
 using Presentation.Common;
 using UnityEngine;
 using Zenject;
@@ -10,26 +12,34 @@ namespace Presentation.Sleep
     {
         [SerializeField] private string description = "Спать";
         [SerializeField] private Outline outline;
-        private ISleepUsecase _playerSleepUsecase;
+        private IPlayerSleepUsecase _playerPlayerSleepUsecase;
             
         [Inject]
-        private void Construct(ISleepUsecase playerSleepUsecase)
+        private void Construct(IPlayerSleepUsecase playerPlayerSleepUsecase)
         {
-            _playerSleepUsecase = playerSleepUsecase;
+            _playerPlayerSleepUsecase = playerPlayerSleepUsecase;
         }
-        public void OnHoverEnter()
+        // TODO красный цвет выделения если невозможно взаимодействовать
+        public void OnHoverEnter<T>(IInteractor<T> interactor) where T : BaseModel
         {
             outline.enabled = true;
         }
 
-        public void OnHoverExit()
+        public void OnHoverExit<T>(IInteractor<T> interactor) where T : BaseModel
         {
             outline.enabled = false;
         }
 
-        public void Interact()
+        public void Interact<T>(IInteractor<T> interactor) where T : BaseModel
         {
-            _playerSleepUsecase.TrySleep();
+            switch (interactor.GetModel())
+            {
+                case Player player:
+                    _playerPlayerSleepUsecase.TrySleep(player);
+                    break;
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
 
         public string GetDescription()

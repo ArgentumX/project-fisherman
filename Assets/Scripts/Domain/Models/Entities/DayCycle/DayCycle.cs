@@ -14,19 +14,28 @@ namespace Domain.Models.Entities.DayCycle
 
         public TimeOfDay TimeOfDay => GetTimeOfDay();
         
+        public event Action<NewDayEvent> OnNewDay;
+        public event Action<DayCycleChangedEvent> OnDayCycleChanged;
+
         public DayCycle(DayCycleState cycleState)
         {
             CurrentTime = cycleState.Time;
             DayLength = cycleState.DayLength;
         }
+
         public void UpdateTime(object sender, float deltaTime)
         {
+            // TODO sender
             CurrentTime += deltaTime;
-            if (CurrentTime >= DayLength) {
+            if (CurrentTime >= DayLength)
+            {
                 CurrentTime = 0;
-                AddDomainEvent(new NewDayEvent(sender, GetState()));
+                var newDayEvent = new NewDayEvent(sender, GetState());
+                OnNewDay?.Invoke(newDayEvent);
             }
-            AddDomainEvent(new DayCycleChangedEvent(sender, GetState()));
+
+            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetState());
+            OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
         }
 
         public DayCycleState GetState()
@@ -38,10 +47,12 @@ namespace Domain.Models.Entities.DayCycle
                 DayLength = DayLength,
             };
         }
+
         public float GetNormalizedTime()
         {
             return CurrentTime / DayLength;
         }
+
         private static readonly List<(TimeOfDay Period, float Start, float End)> Periods = new()
         {
             (TimeOfDay.Night, 0f, 0.25f),
@@ -49,17 +60,22 @@ namespace Domain.Models.Entities.DayCycle
             (TimeOfDay.Day, 0.5f, 0.75f),
             (TimeOfDay.Evening, 0.75f, 1f)
         };
+
         public void SetTimeOfDay(TimeOfDay timeOfDay)
         {
+            // TODO sender
             var period = Periods.FirstOrDefault(p => p.Period == timeOfDay);
-            if (period == default) {
+            if (period == default)
+            {
                 throw new ArgumentException($"Invalid TimeOfDay: {timeOfDay}");
             }
             float normalized = (period.Start + period.End) / 2f;
             CurrentTime = normalized * DayLength;
-            AddDomainEvent(new DayCycleChangedEvent(null, GetState()));
+
+            var dayCycleChangedEvent = new DayCycleChangedEvent(null, GetState());
+            OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
         }
-        
+
         private TimeOfDay GetTimeOfDay()
         {
             float normalized = GetNormalizedTime();

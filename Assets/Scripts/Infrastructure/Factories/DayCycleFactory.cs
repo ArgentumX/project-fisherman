@@ -1,16 +1,11 @@
-﻿using Application.EventSystem;
-using Application.Interfaces.Factories;
+﻿using Application.Interfaces.Factories;
 using Domain.Models.Entities.DayCycle;
-using Domain.Models.Entities.Player;
 
 namespace Infrastructure.Factories
 {
-    public class DayCycleFactory : DomainEventsPublishFactory, IDayCycleFactory
+    public class DayCycleFactory : IDayCycleFactory
     {
-        public DayCycleFactory(IDomainEventsPublisher domainEventsPublisher) : base(domainEventsPublisher)
-        {
-        }
-
+        private DayCycleFactory() { }
         public DayCycle CreateDefault()
         {
             var state = new DayCycleState
@@ -24,7 +19,6 @@ namespace Infrastructure.Factories
         public DayCycle Create(DayCycleState state)
         {
             var dayCycle = new DayCycle(state);
-            RegisterModel(dayCycle);
             return dayCycle;
         }
         
