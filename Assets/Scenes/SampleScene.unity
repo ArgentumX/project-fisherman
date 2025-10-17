@@ -1698,7 +1698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -2165,8 +2165,8 @@ GameObject:
   - component: {fileID: 2115332196}
   - component: {fileID: 2115332199}
   - component: {fileID: 2115332198}
+  - component: {fileID: 2115332202}
   - component: {fileID: 2115332197}
-  - component: {fileID: 2115332200}
   - component: {fileID: 2115332201}
   m_Layer: 6
   m_Name: bed
@@ -2268,20 +2268,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115332195}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &2115332200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115332195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6002456333245b69711632091e4f0eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Presentation.Sleep.BedView
-  description: "\u0421\u043F\u0430\u0442\u044C"
-  outline: {fileID: 2115332201}
 --- !u!114 &2115332201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,6 +2312,22 @@ MonoBehaviour:
     - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
     - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
     - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+--- !u!114 &2115332202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115332195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6002456333245b69711632091e4f0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Presentation.Sleep.BedView
+  description: "\u0421\u043F\u0430\u0442\u044C"
+  outline: {fileID: 2115332201}
+  canInteractColor: {r: 0.6039216, g: 0.8039216, b: 0.1960784, a: 0.5}
+  cannotInteractColor: {r: 1, g: 0.4980392, b: 0.3137255, a: 0.5}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

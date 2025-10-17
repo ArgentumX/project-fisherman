@@ -81,13 +81,15 @@ namespace Presentation.PlayerPresentation.Controllers
                 {
                     if (interactable != _currentTarget)
                     {
-                        if (_currentTarget != null)
-                        {
+                        if (_currentTarget != null) {
                             _currentTarget.OnHoverExit(this);
                         }
                         interactionText.Show($"[E] - " + interactable.GetDescription());
                         _currentTarget = interactable;
                         _currentTarget.OnHoverEnter(this);
+                    }
+                    else {
+                        interactable.OnHoverStay(this);
                     }
                     return; 
                 }

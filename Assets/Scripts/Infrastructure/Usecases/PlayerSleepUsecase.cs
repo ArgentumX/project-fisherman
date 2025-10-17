@@ -25,7 +25,7 @@ namespace Infrastructure.Usecases
                 return false;
             
             player.RestoreStamina(this, player.MaxStamina);
-            _dayCycleRepository.Get().SetTimeOfDay(TimeOfDay.Morning);
+            _dayCycleRepository.Get().SetTimeOfDay(this, TimeOfDay.Morning);
             return true;
         }
 

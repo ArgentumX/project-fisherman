@@ -25,7 +25,6 @@ namespace Domain.Models.Entities.DayCycle
 
         public void UpdateTime(object sender, float deltaTime)
         {
-            // TODO sender
             CurrentTime += deltaTime;
             if (CurrentTime >= DayLength)
             {
@@ -61,9 +60,8 @@ namespace Domain.Models.Entities.DayCycle
             (TimeOfDay.Evening, 0.75f, 1f)
         };
 
-        public void SetTimeOfDay(TimeOfDay timeOfDay)
+        public void SetTimeOfDay(object sender, TimeOfDay timeOfDay)
         {
-            // TODO sender
             var period = Periods.FirstOrDefault(p => p.Period == timeOfDay);
             if (period == default)
             {
@@ -72,7 +70,7 @@ namespace Domain.Models.Entities.DayCycle
             float normalized = (period.Start + period.End) / 2f;
             CurrentTime = normalized * DayLength;
 
-            var dayCycleChangedEvent = new DayCycleChangedEvent(null, GetState());
+            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetState());
             OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
         }
 
