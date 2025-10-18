@@ -4,6 +4,6 @@ namespace Application.Interfaces.Usecases
 {
     public interface IPlayerUsecase
     {
-        void TakeDamage(int amount);
+        void TakeDamage(Player player, int amount);
     }
 }

@@ -8,18 +8,18 @@ namespace Infrastructure.Factories
         private PlayerFactory() { }
         public Player CreateDefault()
         {
-            var state = new PlayerState()
+            var state = new PlayerDto()
             {
                 Health = 100,
                 MaxStamina = 100,
-                Stamina = 50,
+                Stamina = 20,
             };
             return Create(state);
         }
 
-        public Player Create(PlayerState state)
+        public Player Create(PlayerDto dto)
         {
-            var player = new Player(state);
+            var player = new Player(dto);
             return player;
         }
     }

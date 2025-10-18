@@ -34,6 +34,7 @@ namespace Composition
             
             // Handlers
             Container.Bind<DayCycleUpdater>().AsSingle().NonLazy();
+            Container.Bind<PlayerPassOutUpdater>().AsSingle().NonLazy();
         }
     }
 }

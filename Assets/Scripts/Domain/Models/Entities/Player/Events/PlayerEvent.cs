@@ -4,11 +4,11 @@ namespace Domain.Models.Entities.Player.Events
 {
     public class PlayerEvent : BaseEvent
     {
-        public PlayerState PlayerState { get; private set; }
+        public PlayerDto PlayerDto { get; private set; }
         
-        public PlayerEvent(object sender, PlayerState playerState) : base(sender)
+        public PlayerEvent(object sender, PlayerDto playerDto) : base(sender)
         {
-            PlayerState = playerState;
+            PlayerDto = playerDto;
         }
     }
 }

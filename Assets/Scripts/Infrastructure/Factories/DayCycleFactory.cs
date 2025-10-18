@@ -8,7 +8,7 @@ namespace Infrastructure.Factories
         private DayCycleFactory() { }
         public DayCycle CreateDefault()
         {
-            var state = new DayCycleState
+            var state = new DayCycleDto
             {
                 Time = 60,
                 DayLength = 120,
@@ -16,9 +16,9 @@ namespace Infrastructure.Factories
             return Create(state);
         }
 
-        public DayCycle Create(DayCycleState state)
+        public DayCycle Create(DayCycleDto dto)
         {
-            var dayCycle = new DayCycle(state);
+            var dayCycle = new DayCycle(dto);
             return dayCycle;
         }
         

@@ -35,12 +35,12 @@ namespace Presentation.DayCyclePresentation
         private void Start() => _defaultLightAngles = _sunLight.transform.localEulerAngles;
         private void OnDayCycleChanged(DayCycleChangedEvent e)
         {
-            UpdateView(e.DayCycleState);
+            UpdateView(e.DayCycleDto);
         }
 
-        private void UpdateView(DayCycleState state)
+        private void UpdateView(DayCycleDto dto)
         {
-            var timeProgress = state.Time / state.DayLength;
+            var timeProgress = dto.Time / dto.DayLength;
             UpdateLightView(timeProgress);
         }
 

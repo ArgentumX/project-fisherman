@@ -26,7 +26,7 @@ namespace Presentation.PlayerPresentation.UI
         void OnEnable()
         {
             _model.OnPlayerStaminaChanged += OnStaminaChanged;
-            UpdateSlider(_model.GetState());
+            UpdateSlider(_model.GetDto());
         }
 
         void OnDisable()
@@ -43,11 +43,11 @@ namespace Presentation.PlayerPresentation.UI
         
         private void OnStaminaChanged(PlayerStaminaChangedEvent e)
         {
-            UpdateSlider(e.PlayerState);
+            UpdateSlider(e.PlayerDto);
         }
-        private void UpdateSlider(PlayerState state)
+        private void UpdateSlider(PlayerDto dto)
         {
-            _slider.value = state.Stamina / state.MaxStamina;
+            _slider.value = dto.Stamina / dto.MaxStamina;
         }
     }
 }

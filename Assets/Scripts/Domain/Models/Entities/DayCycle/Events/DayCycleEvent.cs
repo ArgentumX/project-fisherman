@@ -4,11 +4,11 @@ namespace Domain.Models.Entities.DayCycle.Events
 {
     public class DayCycleEvent : BaseEvent
     {
-        public DayCycleState DayCycleState { get; private set; }
+        public DayCycleDto DayCycleDto { get; private set; }
         
-        public DayCycleEvent(object sender, DayCycleState state) : base(sender)
+        public DayCycleEvent(object sender, DayCycleDto dto) : base(sender)
         {
-            DayCycleState = state;
+            DayCycleDto = dto;
         }
     }
 }

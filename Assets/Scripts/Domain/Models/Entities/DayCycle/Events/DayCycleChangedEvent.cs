@@ -2,7 +2,7 @@
 {
     public class DayCycleChangedEvent : DayCycleEvent
     {
-        public DayCycleChangedEvent(object sender, DayCycleState state) : base(sender, state)
+        public DayCycleChangedEvent(object sender, DayCycleDto dto) : base(sender, dto)
         {
         }
     }

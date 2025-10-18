@@ -8,19 +8,9 @@ namespace Infrastructure.Usecases
 {
     public class PlayerUsecase : IPlayerUsecase
     {
-        private IPlayerRepository _playerRepository;
-
-        [Inject]
-        public PlayerUsecase(IPlayerRepository repository)
+        public void TakeDamage(Player player, int amount)
         {
-            _playerRepository = repository;
+            player.TakeDamage(amount);
         }
-            
-        public void TakeDamage(int amount)
-        {
-            _playerRepository.Get().TakeDamage(amount);
-        }
-
-
     }
 }

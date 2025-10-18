@@ -16,7 +16,7 @@ namespace Presentation.PlayerPresentation.Controllers
         [SerializeField] private Camera mainCamera;
         [SerializeField] private InputActionAsset inputActions;
         [SerializeField] private LayerMask interactableLayer;
-        [SerializeField, Min(0f)] private float interactableDistance = 100f;
+        [SerializeField, Min(0f)] private float interactableDistance = 2f;
         [SerializeField] private InteractionText interactionText;
         
         private Player _model;
@@ -108,6 +108,15 @@ namespace Presentation.PlayerPresentation.Controllers
             if (_currentTarget != null)
             {
                 _currentTarget.Interact(this);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (mainCamera != null)
+            {
+                Gizmos.color = Color.mediumVioletRed;
+                Gizmos.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * interactableDistance);
             }
         }
     }

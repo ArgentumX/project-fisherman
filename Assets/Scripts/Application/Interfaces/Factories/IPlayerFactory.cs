@@ -5,6 +5,6 @@ namespace Application.Interfaces.Factories
     public interface IPlayerFactory
     {
         Player CreateDefault();
-        Player Create(PlayerState state);
+        Player Create(PlayerDto dto);
     }
 }

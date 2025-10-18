@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Numerics;
 using Domain.Models.Common;
+using Domain.Models.Entities.BedModel;
 using Domain.Models.Entities.Player.Events;
-
+    
 namespace Domain.Models.Entities.Player
 {
     public class Player : BaseModel, IDamageable, IStaminaConsumer
@@ -9,6 +11,9 @@ namespace Domain.Models.Entities.Player
         private int _health;
         private float _stamina;
         private float _maxStamina;
+        private Vector3 _position;
+        // TODO Store Bed reference? Or store bed id? 
+        private Vector3 _bedSpawn;
 
         public float Stamina => _stamina;
         public float MaxStamina => _maxStamina;
@@ -17,14 +22,17 @@ namespace Domain.Models.Entities.Player
         public event Action<PlayerTakeDamageEvent> OnPlayerTakeDamage;
         public event Action<PlayerNotEnoughStaminaEvent> OnPlayerNotEnoughStamina;
         public event Action<PlayerStaminaChangedEvent> OnPlayerStaminaChanged;
-
-        public Player(PlayerState state)
+        public event Action<PlayerPassOutEvent> OnPassOut;
+        
+        public event Action<PlayerSetPositionEvent> OnPlayerSetPosition;
+        
+        public Player(PlayerDto dto)
         {
-            _health = state.Health;
-            _stamina = state.Stamina;
-            _maxStamina = state.MaxStamina;
+            _health = dto.Health;
+            _stamina = dto.Stamina;
+            _maxStamina = dto.MaxStamina;
 
-            var createdEvent = new PlayerCreatedEvent(this, GetState());
+            var createdEvent = new PlayerCreatedEvent(this, GetDto());
             OnPlayerCreated?.Invoke(createdEvent);
         }
 
@@ -37,8 +45,31 @@ namespace Domain.Models.Entities.Player
                 // TODO Death event (пока не реализован)
             }
 
-            var damageEvent = new PlayerTakeDamageEvent(null, GetState());
+            var damageEvent = new PlayerTakeDamageEvent(null, GetDto());
             OnPlayerTakeDamage?.Invoke(damageEvent);
+        }
+        
+        // TODO Move to constructor? (Bed is required for player)
+        public void SetBed(Bed bed)
+        {
+            _bedSpawn = bed.GetDto().Position;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            _position = position;
+            OnPlayerSetPosition?.Invoke(new PlayerSetPositionEvent(this, GetDto()));
+        }
+        public void StartPassOut()
+        {
+            var e = new PlayerPassOutEvent(this, GetDto(), false);
+            OnPassOut?.Invoke(e);
+        }
+
+        public void EndPassOut()
+        {
+            var e = new PlayerPassOutEvent(this, GetDto(), true);
+            OnPassOut?.Invoke(e);
         }
 
         public bool TryConsumeStamina(object sender, float amount)
@@ -50,13 +81,13 @@ namespace Domain.Models.Entities.Player
 
             if (!HasStamina(amount))
             {
-                var notEnoughEvent = new PlayerNotEnoughStaminaEvent(sender, GetState());
+                var notEnoughEvent = new PlayerNotEnoughStaminaEvent(sender, GetDto());
                 OnPlayerNotEnoughStamina?.Invoke(notEnoughEvent);
                 return false;
             }
 
             _stamina -= amount;
-            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetDto());
             OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
             return true;
         }
@@ -68,7 +99,7 @@ namespace Domain.Models.Entities.Player
             }
 
             _stamina = Math.Min(_stamina + amount, _maxStamina);
-            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetDto());
             OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
         }
 
@@ -79,7 +110,7 @@ namespace Domain.Models.Entities.Player
             }
             _stamina = Math.Min(amount, _maxStamina);
 
-            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetState());
+            var staminaChangedEvent = new PlayerStaminaChangedEvent(sender, GetDto());
             OnPlayerStaminaChanged?.Invoke(staminaChangedEvent);
         }
 
@@ -92,13 +123,18 @@ namespace Domain.Models.Entities.Player
             return _stamina >= amount;
         }
 
-        public PlayerState GetState()
+        public Vector3 GetBedSpawn()
         {
-            return new PlayerState
+            return _bedSpawn;
+        }
+        public PlayerDto GetDto()
+        {
+            return new PlayerDto
             {
                 Health = _health,
                 Stamina = _stamina,
                 MaxStamina = _maxStamina,
+                Position = _position,
             };
         }
     }

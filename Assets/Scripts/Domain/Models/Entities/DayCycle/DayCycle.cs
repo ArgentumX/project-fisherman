@@ -13,33 +13,46 @@ namespace Domain.Models.Entities.DayCycle
         public float DayLength { get; private set; }
 
         public TimeOfDay TimeOfDay => GetTimeOfDay();
-        
+
         public event Action<NewDayEvent> OnNewDay;
         public event Action<DayCycleChangedEvent> OnDayCycleChanged;
+        public event Action<NewHourEvent> OnNewHour;
+        private int _lastHour;
 
-        public DayCycle(DayCycleState cycleState)
+        public DayCycle(DayCycleDto cycleDto)
         {
-            CurrentTime = cycleState.Time;
-            DayLength = cycleState.DayLength;
+            CurrentTime = cycleDto.Time;
+            DayLength = cycleDto.DayLength;
+            _lastHour = GetHour();
         }
 
         public void UpdateTime(object sender, float deltaTime)
         {
+
             CurrentTime += deltaTime;
             if (CurrentTime >= DayLength)
             {
                 CurrentTime = 0;
-                var newDayEvent = new NewDayEvent(sender, GetState());
+                var newDayEvent = new NewDayEvent(sender, GetDto());
                 OnNewDay?.Invoke(newDayEvent);
             }
-
-            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetState());
+            
+            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetDto());
             OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
+            
+            int newHour = GetHour();
+            if (newHour != _lastHour)
+            {
+                var newHourEvent = new NewHourEvent(sender, GetDto(), newHour);
+                OnNewHour?.Invoke(newHourEvent);
+            }
+
+            _lastHour = newHour;
         }
 
-        public DayCycleState GetState()
+        public DayCycleDto GetDto()
         {
-            return new DayCycleState
+            return new DayCycleDto
             {
                 Time = CurrentTime,
                 TimeOfDay = GetTimeOfDay(),
@@ -49,7 +62,17 @@ namespace Domain.Models.Entities.DayCycle
 
         public float GetNormalizedTime()
         {
+            if (DayLength == 0f) return 0f;
             return CurrentTime / DayLength;
+        }
+
+        public (int hour, int minute) GetTime24()
+        {
+            float totalTime = GetNormalizedTime() * 24f;
+            int hour = (int) Math.Floor(totalTime);
+            float fractional = totalTime - hour;
+            int minute = (int)Math.Floor(fractional * 60f);
+            return (hour, minute);
         }
 
         private static readonly List<(TimeOfDay Period, float Start, float End)> Periods = new()
@@ -70,7 +93,7 @@ namespace Domain.Models.Entities.DayCycle
             float normalized = (period.Start + period.End) / 2f;
             CurrentTime = normalized * DayLength;
 
-            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetState());
+            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetDto());
             OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
         }
 
@@ -85,6 +108,12 @@ namespace Domain.Models.Entities.DayCycle
                 }
             }
             return TimeOfDay.Night;
+        }
+
+        private int GetHour()
+        {
+            int hour = (int) Math.Floor(GetNormalizedTime() * 24f);
+            return hour;
         }
     }
 }

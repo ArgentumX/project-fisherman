@@ -5,6 +5,6 @@ namespace Application.Interfaces.Factories
     public interface IDayCycleFactory
     {
         DayCycle CreateDefault();
-        DayCycle Create(DayCycleState state);
+        DayCycle Create(DayCycleDto dto);
     }
 }

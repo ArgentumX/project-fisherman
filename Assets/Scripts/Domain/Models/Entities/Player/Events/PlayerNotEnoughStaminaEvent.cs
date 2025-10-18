@@ -2,7 +2,7 @@
 {
     public class PlayerNotEnoughStaminaEvent : PlayerEvent
     {
-        public PlayerNotEnoughStaminaEvent(object sender, PlayerState playerState) : base(sender, playerState)
+        public PlayerNotEnoughStaminaEvent(object sender, PlayerDto playerDto) : base(sender, playerDto)
         {
         }
     }
