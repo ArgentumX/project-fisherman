@@ -12,7 +12,8 @@ namespace Presentation.PlayerPresentation.Controllers
         [SerializeField] private float _sprintMultiplier = 2.0f;
         [SerializeField] private float _gravity = -9.81f;
         [SerializeField] private float _jumpHeight = 5.0f;
-
+            
+        
         [Header("Camera")]
         [SerializeField] private Transform _playerCamera;
         [SerializeField] private float _mouseSensitivity = 0.3f;

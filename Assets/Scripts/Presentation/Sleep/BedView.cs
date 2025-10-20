@@ -97,10 +97,8 @@ namespace Presentation.Sleep
                 outline = GetComponent<Outline>();
                 outline.OutlineColor = canInteractColor;
             }
-
-            if (spawnTransform == null) {
-                spawnTransform = GetComponent<Transform>();
-            }
+            
+            spawnTransform ??= GetComponent<Transform>();
         }
     }
 }

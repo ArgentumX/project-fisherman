@@ -23,7 +23,7 @@ namespace Presentation.DayCyclePresentation
             _model = dayCycleRepository.Get();
         }
 
-        // TODO все Construct private
+
         private void OnEnable()
         {
             _model.OnDayCycleChanged += OnDayCycleChanged;
@@ -53,12 +53,8 @@ namespace Presentation.DayCyclePresentation
         
         private void OnValidate()
         {
-            if (_sunLight == null) {
-                _sunLight = GetComponent<Light>();
-            }
+            _sunLight ??= GetComponent<Light>();
             UpdateLightView(_timeProgress);
         }
-        
-
     }
 }

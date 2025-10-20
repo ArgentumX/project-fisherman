@@ -493,7 +493,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "7607c7b6-cd76-4816-beef-bd0341cfe950",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -502,7 +502,7 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "15cef263-9014-4fd5-94d9-4e4a6234a6ef",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -987,6 +987,34 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlayerUI",
+            "id": "bd6380a2-1b90-4788-bf4f-0c9e6e8b9c80",
+            "actions": [
+                {
+                    "name": "Notebook",
+                    "type": "Button",
+                    "id": "53be6c09-2878-476e-9abf-e5fcb5b777bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "aa4684a5-6f6b-471b-a620-8b9b86ec9ae5",
+                    "path": "<Keyboard>/i",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Notebook",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

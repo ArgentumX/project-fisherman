@@ -32,7 +32,7 @@ namespace Presentation.PlayerPresentation.Controllers
         }
 
         [Inject]
-        public void Construct(IPlayerRepository repository)
+        private void Construct(IPlayerRepository repository)
         {
             _model = repository.Get();
         }

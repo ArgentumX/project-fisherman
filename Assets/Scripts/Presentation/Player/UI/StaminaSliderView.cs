@@ -36,9 +36,7 @@ namespace Presentation.PlayerPresentation.UI
         
         private void OnValidate()
         {
-            if (_slider == null) {
-                _slider = GetComponent<Slider>();
-            }
+            _slider ??= GetComponent<Slider>();
         }
         
         private void OnStaminaChanged(PlayerStaminaChangedEvent e)

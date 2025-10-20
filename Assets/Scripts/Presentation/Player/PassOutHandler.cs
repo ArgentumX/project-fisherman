@@ -51,8 +51,7 @@ namespace Presentation.PlayerPresentation
 
         private void OnValidate()
         {
-            if (!_characterController)
-                _characterController = GetComponent<CharacterController>();
+            _characterController ??= GetComponent<CharacterController>();
         }
     }
 }

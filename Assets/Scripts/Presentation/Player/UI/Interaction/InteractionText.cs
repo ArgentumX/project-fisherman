@@ -21,8 +21,7 @@ namespace Presentation.PlayerPresentation.UI.Interaction
         
         private void OnValidate()
         {
-            if (text == null)
-                text = GetComponent<TextMeshProUGUI>();
+            text ??= GetComponent<TextMeshProUGUI>();
         }
     }
 }
