@@ -27,7 +27,7 @@ namespace Presentation.Sleep
         {
             _playerPlayerSleepUsecase = playerPlayerSleepUsecase;
             // TODO remove this bed init setting, should be factory?
-            _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.Get(), new Bed(new BedDto() {Position = spawnTransform.position.ToSystemVector3()}));
+            _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.GetInstance(), new Bed(new BedDto() {Position = spawnTransform.position.ToSystemVector3()}));
         }
         
         public void OnHoverEnter<T>(IInteractor<T> interactor) where T : BaseModel

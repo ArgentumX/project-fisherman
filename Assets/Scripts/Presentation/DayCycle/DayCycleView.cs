@@ -20,7 +20,7 @@ namespace Presentation.DayCyclePresentation
         [Inject]
         private void Construct(IDayCycleRepository dayCycleRepository)
         {
-            _model = dayCycleRepository.Get();
+            _model = dayCycleRepository.GetInstance();
         }
 
 

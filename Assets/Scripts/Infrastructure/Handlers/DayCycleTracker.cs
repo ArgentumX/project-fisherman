@@ -9,18 +9,18 @@ using Zenject;
 
 namespace Infrastructure.Handlers
 {
-    public class DayCycleUpdater
+    public class DayCycleTracker
     {
         private ITickProvider _tickProvider;
         private IDayCycleUsecase _dayCycleUsecase;
         private DayCycle _dayCycle;
 
         [Inject]
-        public DayCycleUpdater(ITickProvider tickProvider, IDayCycleUsecase dayCycleUsecase, IDayCycleRepository dayCycleRepository)
+        public DayCycleTracker(ITickProvider tickProvider, IDayCycleUsecase dayCycleUsecase, IDayCycleRepository dayCycleRepository)
         {
             _tickProvider = tickProvider;
             _dayCycleUsecase = dayCycleUsecase;
-            _dayCycle = dayCycleRepository.Get();
+            _dayCycle = dayCycleRepository.GetInstance();
             Subscribe();
         }
 

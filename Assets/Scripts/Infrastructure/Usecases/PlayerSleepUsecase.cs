@@ -25,7 +25,7 @@ namespace Infrastructure.Usecases
                 return false;
             
             player.RestoreStamina(this, player.MaxStamina);
-            _dayCycleRepository.Get().SetTimeOfDay(this, TimeOfDay.Morning);
+            _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
             return true;
         }
 
@@ -36,7 +36,7 @@ namespace Infrastructure.Usecases
 
         public bool IsPossibleToSleep(Player player)
         {
-            var timeOfDay = _dayCycleRepository.Get().TimeOfDay;
+            var timeOfDay = _dayCycleRepository.GetInstance().TimeOfDay;
             if (timeOfDay is TimeOfDay.Evening or TimeOfDay.Night) {
                 return true;
             }
@@ -56,7 +56,7 @@ namespace Infrastructure.Usecases
             player.SetPosition(player.GetBedSpawn());
             player.EndPassOut();
             player.SetStamina(this, Math.Min(player.MaxStamina, player.Stamina + player.MaxStamina * _restorePercent));
-            _dayCycleRepository.Get().SetTimeOfDay(this, TimeOfDay.Morning);
+            _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
         }
     }
 }

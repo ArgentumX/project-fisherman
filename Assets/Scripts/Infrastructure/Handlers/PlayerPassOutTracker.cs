@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Infrastructure.Handlers
 {
-    public class PlayerPassOutUpdater
+    public class PlayerPassOutTracker
     {
         private IPlayerSleepUsecase _playerSleepUsecase;
         private DayCycle _dayCycle;
@@ -16,14 +16,14 @@ namespace Infrastructure.Handlers
         private int _playerPassOutHourUp = 23;
 
         [Inject]
-        public PlayerPassOutUpdater(
+        public PlayerPassOutTracker(
             IDayCycleRepository dayCycleRepository, 
             IPlayerRepository playerRepository, 
             IPlayerSleepUsecase playerSleepUsecase)
         {
             _playerSleepUsecase = playerSleepUsecase;
-            _dayCycle = dayCycleRepository.Get();
-            _player = playerRepository.Get();
+            _dayCycle = dayCycleRepository.GetInstance();
+            _player = playerRepository.GetInstance();
             Subscribe();
         }
         

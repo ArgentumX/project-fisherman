@@ -3,7 +3,6 @@
     public abstract class BaseEvent
     {
         public object Sender { get; private set; }
-
         protected BaseEvent(object sender)
         {
             Sender = sender;

@@ -19,7 +19,7 @@ namespace Presentation.PlayerPresentation
         [Inject]
         private void Construct(IPlayerRepository playerRepository, IPlayerSleepUsecase  playerSleepUsecase)
         {
-            _player = playerRepository.Get();
+            _player = playerRepository.GetInstance();
             _playerSleepUsecase = playerSleepUsecase;
         }
 

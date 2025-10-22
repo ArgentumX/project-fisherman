@@ -34,7 +34,7 @@ namespace Presentation.PlayerPresentation.Controllers
         [Inject]
         private void Construct(IPlayerRepository repository)
         {
-            _model = repository.Get();
+            _model = repository.GetInstance();
         }
 
         private void OnEnable()

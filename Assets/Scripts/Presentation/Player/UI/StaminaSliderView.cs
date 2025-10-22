@@ -20,7 +20,7 @@ namespace Presentation.PlayerPresentation.UI
         private void Construct(IPlayerUsecase playerUsecase, IPlayerRepository repository)
         {
             _playerUsecase = playerUsecase;
-            _model = repository.Get();
+            _model = repository.GetInstance();
         }
         
         void OnEnable()

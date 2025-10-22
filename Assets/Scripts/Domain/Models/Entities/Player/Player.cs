@@ -15,6 +15,7 @@ namespace Domain.Models.Entities.Player
         // TODO Store Bed reference? Or store bed id? 
         private Vector3 _bedSpawn;
 
+        public PlayerQuestsProgress QuestsProgress { get; } = new();
         public float Stamina => _stamina;
         public float MaxStamina => _maxStamina;
         
