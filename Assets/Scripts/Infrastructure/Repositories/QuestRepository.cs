@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
 using Domain.Models.Entities.Quest;
@@ -27,9 +28,9 @@ namespace Infrastructure.Repositories
             throw new KeyNotFoundException($"Quest with ID {id} was not found.");
         }
 
-        public IEnumerable<Quest> GetAll()
+        public List<Quest> GetAll()
         {
-            return _quests.Values;
+            return _quests.Values.ToList();
         }
         
         // TODO replace Save => Add, Remove and Save only for data work

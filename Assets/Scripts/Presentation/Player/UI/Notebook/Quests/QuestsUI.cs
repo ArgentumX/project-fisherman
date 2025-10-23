@@ -15,7 +15,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
     {
         [SerializeField] private TextMeshProUGUI textDisplay;
 
-        private List<Quest> _trackedQuests; // Только отслеживаемые (корневые) квесты
+        private List<Quest> _trackedQuests;
         private IQuestRepository _questRepository;
 
         [Inject]
@@ -26,11 +26,8 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
 
         private void Start()
         {
-            // Получаем только отслеживаемые квесты (например, активные или назначенные игроку)
-            // Предполагается, что репозиторий предоставляет такой метод.
-            // Если нет — можно фильтровать по статусу или флагу IsTracked.
+            // TODO create QuestUI (Quest quest), which will subscribe on other quests
             _trackedQuests = new List<Quest>(_questRepository.GetAll());
-
             foreach (var quest in _trackedQuests)
             {
                 SubscribeToQuest(quest);
@@ -59,7 +56,6 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
 
         private void HandleQuestUpdated(QuestUpdatedEvent e)
         {
-            // Обновляем всё отображение при любом изменении
             UpdateDisplay();
         }
 
@@ -68,6 +64,8 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
             var sb = new StringBuilder();
             foreach (var trackedQuest in _trackedQuests)
             {
+                if (trackedQuest.Status == QuestStatus.NotStarted)
+                    continue;
                 BuildQuestDisplay(sb, trackedQuest, 0);
             }
             textDisplay.text = sb.ToString();
@@ -93,12 +91,12 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
         private string GetStatusEmoji(QuestStatus status)
         {
             return status switch
-            {
-                QuestStatus.NotStarted => "❌",
-                QuestStatus.Active => "▶️",
+            {                
+                QuestStatus.NotStarted => "▶️",
+                QuestStatus.Active => "❗",
                 QuestStatus.Completed => "✅",
-                QuestStatus.Failed => "❗",
-                _ => "❓"
+                QuestStatus.Failed => "❌",
+                _ => "?"
             };
         }
 
