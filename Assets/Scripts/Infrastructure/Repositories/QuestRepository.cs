@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
 using Domain.Models.Entities.Quest;
+using Zenject;
 
 namespace Infrastructure.Repositories
 {
@@ -10,19 +11,12 @@ namespace Infrastructure.Repositories
     {
         private readonly Dictionary<Guid, Quest> _quests = new();
 
-        public QuestRepository()
+        [Inject]
+        public QuestRepository(IQuestFactory factory)
         {
-            // TODO factory
-            var q1 = new StaminaQuest("TEST GET MAX STAMIN", QuestStatus.Active);
-            var q2 = new SequentialCompositeQuest(
-                "TEST SequentialCompositeQuest",
-                new []
-                {
-                    new StaminaQuest("Stamina Quest", QuestStatus.Active),
-                },
-                QuestStatus.Active);
-            _quests.Add(q1.Id, q1);
-            _quests.Add(q2.Id, q2);
+            foreach (var quest in factory.CreateDefault()){
+                Save(quest);
+            }
         }
         
         public Quest Get(Guid id)
@@ -37,7 +31,8 @@ namespace Infrastructure.Repositories
         {
             return _quests.Values;
         }
-
+        
+        // TODO replace Save => Add, Remove and Save only for data work
         public void Save(Quest target)
         {
             if (target == null)

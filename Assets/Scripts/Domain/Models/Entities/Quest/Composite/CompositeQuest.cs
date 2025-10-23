@@ -17,9 +17,6 @@ namespace Domain.Models.Entities.Quest
         {
             // TODO why zenject errors are not displayed in editor?
             _subQuests = subQuests == null ? new List<Quest>() : subQuests.ToList();
-            if (_subQuests.Count == 0) {
-                throw new ArgumentException("SubQuests cannot be null or empty");
-            }
             SubscribeToSubQuests();
         }
         public override float Progress
@@ -63,8 +60,6 @@ namespace Domain.Models.Entities.Quest
 
         private void SubscribeToSubQuests()
         {
-            if (_subQuests == null) 
-                throw new ArgumentException("Detected empty composite quest");
             foreach (var quest in _subQuests)
             {
                 quest.OnQuestStarted += HandleSubQuestStarted;
@@ -75,8 +70,6 @@ namespace Domain.Models.Entities.Quest
         }
         private void UnsubscribeFromSubQuests()
         {
-            if (_subQuests == null) 
-                throw new ArgumentException("Detected empty composite quest");
             foreach (var quest in _subQuests)
             {
                 quest.OnQuestStarted -= HandleSubQuestStarted;

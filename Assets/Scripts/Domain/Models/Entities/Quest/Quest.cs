@@ -63,8 +63,6 @@ namespace Domain.Models.Entities.Quest
 
         protected void RaiseUpdated()
         {
-            if (Status != QuestStatus.Active) 
-                throw new WarningException("Detected link leak");;
             var updatedEvent = new QuestUpdatedEvent(this, Id);
             OnQuestUpdated?.Invoke(updatedEvent);
         }

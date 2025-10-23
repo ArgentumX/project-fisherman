@@ -19,6 +19,7 @@ namespace Composition
             // Factories
             Container.Bind<IDayCycleFactory>().To<DayCycleFactory>().AsTransient();
             Container.Bind<IPlayerFactory>().To<PlayerFactory>().AsTransient();
+            Container.Bind<IQuestFactory>().To<QuestFactory>().AsTransient();
             
             // Repositories
             Container.Bind<IPlayerRepository>().To<PlayerRepository>().AsSingle().NonLazy();
