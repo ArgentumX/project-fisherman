@@ -13,6 +13,10 @@ namespace Infrastructure.Handlers
 {
     public class QuestsTracker
     {
+        public event Action<QuestStartedEvent> OnQuestStarted;
+        public event Action<QuestCompletedEvent> OnQuestCompleted;
+        public event Action<QuestFailedEvent> OnQuestFailed;
+        
         private readonly IQuestRepository _questRepository;
         private readonly IPlayerRepository _playerRepository;
         private readonly List<Quest> _activeQuests = new();
@@ -41,6 +45,7 @@ namespace Infrastructure.Handlers
         {
             foreach (Quest quest in _questRepository.GetAll())
             {
+                // TODO Warning no unsubscribing, better to subscribe on QuestsEventProvider
                 quest.OnQuestStarted += HandleQuestStarted;
                 quest.OnQuestCompleted += HandleQuestCompleted;
                 quest.OnQuestFailed += HandleQuestFailed;
@@ -59,6 +64,7 @@ namespace Infrastructure.Handlers
                 _activeQuests.Add(quest);
                 RegisterListeners(quest);
             }
+            OnQuestStarted?.Invoke(questEvent);
         }
 
         private void HandleQuestCompleted(QuestCompletedEvent questEvent)
@@ -69,6 +75,7 @@ namespace Infrastructure.Handlers
                 UnregisterListeners(quest);
                 _activeQuests.Remove(quest);
             }
+            OnQuestCompleted?.Invoke(questEvent);
         }
 
         private void HandleQuestFailed(QuestFailedEvent questEvent)
@@ -79,6 +86,7 @@ namespace Infrastructure.Handlers
                 UnregisterListeners(quest);
                 _activeQuests.Remove(quest);
             }
+            OnQuestFailed?.Invoke(questEvent);
         }
 
         private void RegisterListeners(Quest quest)

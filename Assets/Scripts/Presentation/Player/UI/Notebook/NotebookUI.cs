@@ -10,7 +10,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook
     {
         [SerializeField] private GameObject notebookContent;
         [SerializeField] private InventoryUI inventoryUI;
-        [SerializeField] private QuestsUI questsUI;
+        [SerializeField] private QuestsUI questsesUI;
         [SerializeField] private MapUI mapUI;
         private GameObject _previousPage;
         
@@ -68,7 +68,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook
 
         public void OnQuestsButtonClicked()
         {
-            SwapTo(questsUI.gameObject);
+            SwapTo(questsesUI.gameObject);
         }
 
         public void OnMapButtonClicked()
@@ -86,7 +86,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook
         private void OnValidate()
         {
             inventoryUI ??= GetComponentInChildren<InventoryUI>(true);
-            questsUI ??= GetComponentInChildren<QuestsUI>(true);
+            questsesUI ??= GetComponentInChildren<QuestsUI>(true);
             mapUI ??= GetComponentInChildren<MapUI>(true);
         }
     }

@@ -14,7 +14,15 @@ namespace Infrastructure.Repositories
         {
             // TODO factory
             var q1 = new StaminaQuest("TEST GET MAX STAMIN", QuestStatus.Active);
+            var q2 = new SequentialCompositeQuest(
+                "TEST SequentialCompositeQuest",
+                new []
+                {
+                    new StaminaQuest("Stamina Quest", QuestStatus.Active),
+                },
+                QuestStatus.Active);
             _quests.Add(q1.Id, q1);
+            _quests.Add(q2.Id, q2);
         }
         
         public Quest Get(Guid id)
@@ -25,7 +33,7 @@ namespace Infrastructure.Repositories
             throw new KeyNotFoundException($"Quest with ID {id} was not found.");
         }
 
-        public IEnumerable GetAll()
+        public IEnumerable<Quest> GetAll()
         {
             return _quests.Values;
         }
