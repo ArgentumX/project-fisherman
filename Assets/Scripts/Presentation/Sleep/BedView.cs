@@ -18,6 +18,7 @@ namespace Presentation.Sleep
         [SerializeField] private Color canInteractColor = Color.yellowGreen;
         [SerializeField] private Color cannotInteractColor = Color.coral;
         [SerializeField] private Transform spawnTransform;
+        [SerializeField, Min(0)] private float interactionTime = 0;
         
         private IPlayerSleepUsecase _playerPlayerSleepUsecase;
         
@@ -81,8 +82,19 @@ namespace Presentation.Sleep
             }
         }
 
-        public string GetDescription()
+        public bool CanInteract<T>(IInteractor<T> interactor) where T : BaseModel
         {
+            switch (interactor.GetModel())
+            {
+                case Player player:
+                    return _playerPlayerSleepUsecase.IsPossibleToSleep(player);
+                default:
+                    throw new System.NotImplementedException();
+            }
+        }
+
+        public float GetInteractionTime() => interactionTime;
+        public string GetDescription() {
             return description;
         }
 

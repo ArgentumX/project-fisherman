@@ -10,10 +10,10 @@ namespace Presentation.DayCyclePresentation
     public class DayCycleView : MonoBehaviour
     {
         private DayCycle _model;
-        [SerializeField] private Light _sunLight; 
-        [SerializeField] private Gradient _sunGradient;
-        [SerializeField] private Gradient _ambientGradient;
-        [SerializeField, Range(0, 1)] private float _timeProgress;
+        [SerializeField] private Light sunLight; 
+        [SerializeField] private Gradient sunGradient;
+        [SerializeField] private Gradient ambientGradient;
+        [SerializeField, Range(0, 1)] private float displayTimeProgress;
         private Vector3 _defaultLightAngles;
         
         // TODO create Initializers system
@@ -32,7 +32,7 @@ namespace Presentation.DayCyclePresentation
         {
             _model.OnDayCycleChanged -= OnDayCycleChanged;
         }
-        private void Start() => _defaultLightAngles = _sunLight.transform.localEulerAngles;
+        private void Start() => _defaultLightAngles = sunLight.transform.localEulerAngles;
         private void OnDayCycleChanged(DayCycleChangedEvent e)
         {
             UpdateView(e.DayCycleDto);
@@ -40,21 +40,21 @@ namespace Presentation.DayCyclePresentation
 
         private void UpdateView(DayCycleDto dto)
         {
-            var timeProgress = dto.Time / dto.DayLength;
-            UpdateLightView(timeProgress);
+            var normalizedTime = dto.Time / dto.DayLength;
+            UpdateLightView(normalizedTime);
         }
 
-        private void UpdateLightView(float timeProgress)
+        private void UpdateLightView(float normalizedTime)
         {
-            _sunLight.color = _sunGradient.Evaluate(timeProgress);
-            RenderSettings.ambientLight = _ambientGradient.Evaluate(timeProgress);
-            _sunLight.transform.localEulerAngles = new Vector3(360f * timeProgress - 90, _defaultLightAngles.y, _defaultLightAngles.z);  
+            sunLight.color = sunGradient.Evaluate(normalizedTime);
+            RenderSettings.ambientLight = ambientGradient.Evaluate(normalizedTime);
+            sunLight.transform.localEulerAngles = new Vector3(360f * normalizedTime - 90, _defaultLightAngles.y, _defaultLightAngles.z);  
         }
         
         private void OnValidate()
         {
-            _sunLight ??= GetComponent<Light>();
-            UpdateLightView(_timeProgress);
+            sunLight ??= GetComponent<Light>();
+            UpdateLightView(displayTimeProgress);
         }
     }
 }

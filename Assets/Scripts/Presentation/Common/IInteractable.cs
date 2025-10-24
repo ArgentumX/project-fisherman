@@ -8,6 +8,8 @@ namespace Presentation.Common
         void OnHoverStay<T>(IInteractor<T> interactor) where T : BaseModel;
         void OnHoverExit<T>(IInteractor<T> interactor) where T : BaseModel;
         void Interact<T>(IInteractor<T> interactor) where T : BaseModel;
+        bool CanInteract<T>(IInteractor<T> interactor) where T : BaseModel;
+        float GetInteractionTime();
         string GetDescription();
     }
 }
