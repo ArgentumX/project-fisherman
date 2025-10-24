@@ -24,6 +24,7 @@ namespace Composition
             // Repositories
             Container.Bind<IPlayerRepository>().To<PlayerRepository>().AsSingle().NonLazy();
             Container.Bind<IDayCycleRepository>().To<DayCycleRepository>().AsSingle().NonLazy();
+            // INIT LAST!!!
             Container.Bind<IQuestRepository>().To<QuestRepository>().AsSingle().NonLazy();
             
             // Usecases
@@ -35,9 +36,9 @@ namespace Composition
             Container.Bind<ITickProvider>().To<TickProvider>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
             
             // Handlers
-            Container.Bind<DayCycleTracker>().AsSingle().NonLazy();
-            Container.Bind<PlayerPassOutTracker>().AsSingle().NonLazy();
-            Container.Bind<QuestsTracker>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<DayCycleTracker>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlayerPassOutTracker>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<QuestsTracker>().AsSingle().NonLazy();
         }
     }
 }

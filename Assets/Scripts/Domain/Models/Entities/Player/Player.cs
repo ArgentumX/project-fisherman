@@ -2,10 +2,14 @@
 using System.Numerics;
 using Domain.Models.Common;
 using Domain.Models.Entities.Player.Events;
-    
+using Domain.Models.Entities.Quest;
+
 namespace Domain.Models.Entities.Player
 {
-    public class Player : BaseModel, IDamageable, IStaminaConsumer
+    public class Player : 
+        BaseModel,
+        IDamageable, 
+        IStaminaConsumer
     {
         private int _health;
         private float _stamina;
@@ -18,12 +22,10 @@ namespace Domain.Models.Entities.Player
         public float Stamina => _stamina;
         public float MaxStamina => _maxStamina;
         
-        public event Action<PlayerCreatedEvent> OnPlayerCreated;
         public event Action<PlayerTakeDamageEvent> OnPlayerTakeDamage;
         public event Action<PlayerNotEnoughStaminaEvent> OnPlayerNotEnoughStamina;
         public event Action<PlayerStaminaChangedEvent> OnPlayerStaminaChanged;
         public event Action<PlayerPassOutEvent> OnPassOut;
-        
         public event Action<PlayerSetPositionEvent> OnPlayerSetPosition;
         
         public Player(PlayerDto dto)
@@ -31,11 +33,8 @@ namespace Domain.Models.Entities.Player
             _health = dto.Health;
             _stamina = dto.Stamina;
             _maxStamina = dto.MaxStamina;
-
-            var createdEvent = new PlayerCreatedEvent(this, GetDto());
-            OnPlayerCreated?.Invoke(createdEvent);
+            // TODO teleport to old position
         }
-
         public void TakeDamage(int amount)
         {
             _health -= amount;

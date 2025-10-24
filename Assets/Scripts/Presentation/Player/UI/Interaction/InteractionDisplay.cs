@@ -17,6 +17,8 @@ namespace Presentation.PlayerPresentation.UI.Interaction
         
         public void DisableInteractionText()
         {
+            if (text == null)
+                return;
             text.gameObject.SetActive(false);
         }
         public void EnableHoldBar() {
@@ -28,6 +30,8 @@ namespace Presentation.PlayerPresentation.UI.Interaction
             holdProgressUI.fillAmount = progress;
         }
         public void DisableHoldBar() {
+            if (holdProgressUI == null)
+                return;
             holdProgressUI.gameObject.SetActive(false);
         }
         private void OnValidate()

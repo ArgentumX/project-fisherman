@@ -13,9 +13,10 @@ namespace Infrastructure.Repositories
         private readonly Dictionary<Guid, Quest> _quests = new();
 
         [Inject]
-        public QuestRepository(IQuestFactory factory)
+        public QuestRepository(IQuestFactory factory, IPlayerRepository playerRepository)
         {
-            foreach (var quest in factory.CreateDefault()){
+            // TODO replace fcking create-logic to separate class
+            foreach (var quest in factory.CreateDefault(playerRepository.GetInstance().GetDto())){
                 Save(quest);
             }
         }

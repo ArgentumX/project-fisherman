@@ -1,19 +1,43 @@
 ﻿using Domain.Models.Common;
+using Domain.Models.Entities.Player;
 using Domain.Models.Entities.Player.Events;
 
 namespace Domain.Models.Entities.Quest
 {
-    public class StaminaQuest : Quest, IEventHandler<PlayerStaminaChangedEvent>
+    public class StaminaQuest : 
+        Quest, 
+        IEventHandler<PlayerStaminaChangedEvent>
     {
-        public StaminaQuest(string title, QuestStatus status = QuestStatus.NotStarted) : base(title, status)
-        {
+        public override float Progress { get => _progress; }
+        private float _progress;
+        public StaminaQuest(string title, PlayerDto playerDto, QuestStatus status = QuestStatus.NotStarted) : base(title, status) {
+            UpgradeProgressAndTryComplete(playerDto);
         }
+
 
         public void Handle(PlayerStaminaChangedEvent e)
         {
-            if (e.PlayerDto.Stamina == e.PlayerDto.MaxStamina) {
-                _CompleteQuest();
-            }
+            UpgradeProgressAndTryComplete(e.PlayerDto);
         }
+        
+        private void UpgradeProgressAndTryComplete(PlayerDto source)
+        {
+            UpdateProgress(source);
+            if (!TryComplete())
+                RaiseUpdated();
+        }
+        private void UpdateProgress(PlayerDto source) {
+            _progress = source.Stamina / source.MaxStamina;
+        }
+
+        private bool TryComplete() {
+            if (_progress == 1f) {
+                _CompleteQuest();
+                return true;
+            }
+
+            return false;
+        }
+        
     }
 }
