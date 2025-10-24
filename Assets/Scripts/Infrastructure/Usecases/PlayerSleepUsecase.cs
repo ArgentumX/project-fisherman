@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Numerics;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Enums;
-using Domain.Models.Entities.BedModel;
 using Domain.Models.Entities.Player;
 using Zenject;
 
@@ -24,14 +24,15 @@ namespace Infrastructure.Usecases
             if (!IsPossibleToSleep(player))
                 return false;
             
+            player.SetPosition(player.GetBedSpawn());
             player.RestoreStamina(this, player.MaxStamina);
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
             return true;
         }
 
-        public void SetPlayerBed(Player player, Bed bed)
+        public void SetPlayerBed(Player player, Vector3 bedSpawn)
         {
-            player.SetBed(bed);
+            player.SetBed(bedSpawn);
         }
 
         public bool IsPossibleToSleep(Player player)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Numerics;
 using Domain.Models.Common;
-using Domain.Models.Entities.BedModel;
 using Domain.Models.Entities.Player.Events;
     
 namespace Domain.Models.Entities.Player
@@ -51,9 +50,9 @@ namespace Domain.Models.Entities.Player
         }
         
         // TODO Move to constructor? (Bed is required for player)
-        public void SetBed(Bed bed)
+        public void SetBed(Vector3 spawnPosition)
         {
-            _bedSpawn = bed.GetDto().Position;
+            _bedSpawn = spawnPosition;
         }
 
         public void SetPosition(Vector3 position)

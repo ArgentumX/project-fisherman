@@ -1,4 +1,4 @@
-﻿using Domain.Models.Entities.BedModel;
+﻿using System.Numerics;
 using Domain.Models.Entities.Player;
 
 namespace Application.Interfaces.Usecases
@@ -7,7 +7,7 @@ namespace Application.Interfaces.Usecases
     {
         bool TrySleep(Player player);
         bool IsPossibleToSleep(Player player);
-        void SetPlayerBed(Player player, Bed bed);
+        void SetPlayerBed(Player player, Vector3 bedSpawn);
         void StartPassOut(Player player);
         void EndPassOut(Player player);
     }

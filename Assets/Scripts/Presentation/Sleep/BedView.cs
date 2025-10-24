@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Models.Common;
-using Domain.Models.Entities.BedModel;
 using Domain.Models.Entities.Player;
 using Infrastructure.Extensions;
 using Presentation.Common;
@@ -28,7 +27,7 @@ namespace Presentation.Sleep
         {
             _playerPlayerSleepUsecase = playerPlayerSleepUsecase;
             // TODO remove this bed init setting, should be factory?
-            _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.GetInstance(), new Bed(new BedDto() {Position = spawnTransform.position.ToSystemVector3()}));
+            _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.GetInstance(), spawnTransform.position.ToSystemVector3());
         }
         
         public void OnHoverEnter<T>(IInteractor<T> interactor) where T : BaseModel
