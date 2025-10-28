@@ -10,17 +10,10 @@ using Zenject;
 namespace Presentation.Sleep
 {
     [RequireComponent(typeof(Outline))]
-    public class BedView : MonoBehaviour, IInteractable
+    public class BedView : OutlineInteractable
     {
-        [SerializeField] private string description = "Спать";
-        [SerializeField] private Outline outline;
-        [SerializeField] private Color canInteractColor = Color.yellowGreen;
-        [SerializeField] private Color cannotInteractColor = Color.coral;
         [SerializeField] private Transform spawnTransform;
-        [SerializeField, Min(0)] private float interactionTime = 0;
-        
         private IPlayerSleepUsecase _playerPlayerSleepUsecase;
-        
         
         [Inject]
         private void Construct(IPlayerSleepUsecase playerPlayerSleepUsecase, IPlayerRepository playerRepository)
@@ -30,46 +23,7 @@ namespace Presentation.Sleep
             _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.GetInstance(), spawnTransform.position.ToSystemVector3());
         }
         
-        public void OnHoverEnter<T>(IInteractor<T> interactor) where T : BaseModel
-        {
-            switch (interactor.GetModel())
-            {
-                case Player player:
-                    bool canInteract = _playerPlayerSleepUsecase.IsPossibleToSleep(player); 
-                    UpdateOutlineColor(canInteract);
-                    outline.enabled = true;
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void OnHoverStay<T>(IInteractor<T> interactor) where T : BaseModel
-        {
-            switch (interactor.GetModel())
-            {
-                case Player player:
-                    bool canInteract = _playerPlayerSleepUsecase.IsPossibleToSleep(player);
-                    UpdateOutlineColor(canInteract);
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void OnHoverExit<T>(IInteractor<T> interactor) where T : BaseModel
-        {
-            switch (interactor.GetModel())
-            {
-                case Player player:
-                    outline.enabled = false;
-                    break;
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-
-        public void Interact<T>(IInteractor<T> interactor) where T : BaseModel
+        public override void Interact<T>(IInteractor<T> interactor)
         {
             switch (interactor.GetModel())
             {
@@ -81,7 +35,7 @@ namespace Presentation.Sleep
             }
         }
 
-        public bool CanInteract<T>(IInteractor<T> interactor) where T : BaseModel
+        public override bool CanInteract<T>(IInteractor<T> interactor)
         {
             switch (interactor.GetModel())
             {
@@ -91,24 +45,9 @@ namespace Presentation.Sleep
                     throw new System.NotImplementedException();
             }
         }
-
-        public float GetInteractionTime() => interactionTime;
-        public string GetDescription() {
-            return description;
-        }
-
-        private void UpdateOutlineColor(bool canInteract)
+        private void Reset()
         {
-            outline.OutlineColor = canInteract ? canInteractColor : cannotInteractColor;
-        }
-
-        private void OnValidate()
-        {
-            if (outline == null) {
-                outline = GetComponent<Outline>();
-                outline.OutlineColor = canInteractColor;
-            }
-            
+            ResetBase();
             spawnTransform ??= GetComponent<Transform>();
         }
     }
