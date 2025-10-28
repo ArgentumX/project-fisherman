@@ -49,7 +49,7 @@ namespace Presentation.PlayerPresentation
            _characterController.Teleport(e.PlayerDto.Position.ToUnityVector3());
         }
 
-        private void OnValidate()
+        private void Reset()
         {
             _characterController ??= GetComponent<CharacterController>();
         }
