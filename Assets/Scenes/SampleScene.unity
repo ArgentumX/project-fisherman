@@ -4260,7 +4260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 0
-  outlineColor: {r: 0.6039216, g: 0.8039216, b: 0.1960784, a: 1}
+  outlineColor: {r: 0.15686275, g: 0.62352943, b: 0.8352941, a: 1}
   outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
@@ -4279,7 +4279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MusicBox
   description: Interact
   outline: {fileID: 2049139158}
-  canInteractColor: {r: 0.6039216, g: 0.8039216, b: 0.1960784, a: 1}
+  canInteractColor: {r: 0.15686275, g: 0.62352943, b: 0.8352941, a: 1}
   cannotInteractColor: {r: 1, g: 0.4980392, b: 0.3137255, a: 1}
   interactionTime: 0
   audioSource: {fileID: 2049139157}
