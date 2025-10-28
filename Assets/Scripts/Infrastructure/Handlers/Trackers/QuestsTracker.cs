@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain.Models.Common;
 using Domain.Models.Entities.Player;
-using Domain.Models.Entities.Player.Events;
 using Zenject;
 
 namespace Infrastructure.Handlers
