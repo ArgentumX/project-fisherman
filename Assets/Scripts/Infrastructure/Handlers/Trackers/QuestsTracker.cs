@@ -33,64 +33,79 @@ namespace Infrastructure.Handlers
 
         private void SubscribePlayerEvents(Player player)
         {
-            player.OnPlayerStaminaChanged += RaiseEventForQuests;
+            player.OnPlayerStaminaChanged += NotifyTrackedQuests;
         }
         
         // TODO unsubscribe, is it required at all?
         private void UnsubscribePlayerEvents(Player player) {
-            player.OnPlayerStaminaChanged -= RaiseEventForQuests;
+            player.OnPlayerStaminaChanged -= NotifyTrackedQuests;
         }
         
         private void LoadQuests()
         {
             foreach (Quest quest in _questRepository.GetAll())
             {
-                // TODO Warning no unsubscribing, better to subscribe on QuestsEventProvider
-                quest.OnQuestStarted += HandleQuestStarted;
-                quest.OnQuestCompleted += HandleQuestCompleted;
-                quest.OnQuestFailed += HandleQuestFailed;
-                if (quest.Status == QuestStatus.Active) {
-                    _activeQuests.Add(quest);
-                    RegisterListeners(quest);
+                SubscribeToQuestRecursive(quest);
+            }
+        }
+
+        private void SubscribeToQuestRecursive(Quest quest)
+        {
+            SubscribeToQuest(quest);
+            if (quest is CompositeQuest composite) {
+                foreach (var subQuest in composite.SubQuests) {
+                    SubscribeToQuestRecursive(subQuest);
                 }
             }
         }
 
+        private void UnsubscribeFromQuestRecursive(Quest quest)
+        {
+            UnsubscribeFromQuest(quest);
+            if (quest is CompositeQuest composite) {
+                foreach (var subQuest in composite.SubQuests) {
+                    UnsubscribeFromQuestRecursive(subQuest);
+                }
+            }
+        }
+        private void SubscribeToQuest(Quest quest)
+        {
+            quest.OnQuestStarted += HandleQuestStarted;
+            quest.OnQuestCompleted += HandleQuestCompleted;
+            quest.OnQuestFailed += HandleQuestFailed;
+        }
+        private void UnsubscribeFromQuest(Quest quest)
+        {
+            quest.OnQuestStarted -= HandleQuestStarted;
+            quest.OnQuestCompleted -= HandleQuestCompleted;
+            quest.OnQuestFailed -= HandleQuestFailed;
+        }
+        
         private void HandleQuestStarted(QuestStartedEvent questEvent)
         {
-            Quest quest = _questRepository.Get(questEvent.QuestId);
-            if (!_activeQuests.Contains(quest))
-            {
-                _activeQuests.Add(quest);
-                RegisterListeners(quest);
-            }
+            Quest quest = questEvent.Quest;
+            RegisterListeners(quest);
             OnQuestStarted?.Invoke(questEvent);
         }
 
         private void HandleQuestCompleted(QuestCompletedEvent questEvent)
         {
-            Quest quest = _questRepository.Get(questEvent.QuestId);
-            if (_activeQuests.Contains(quest))
-            {
-                UnregisterListeners(quest);
-                _activeQuests.Remove(quest);
-            }
+            Quest quest = questEvent.Quest;
+            UnregisterListeners(quest);
             OnQuestCompleted?.Invoke(questEvent);
         }
 
         private void HandleQuestFailed(QuestFailedEvent questEvent)
         {
-            Quest quest = _questRepository.Get(questEvent.QuestId);
-            if (_activeQuests.Contains(quest))
-            {
-                UnregisterListeners(quest);
-                _activeQuests.Remove(quest);
-            }
+            Quest quest = questEvent.Quest;
+            UnregisterListeners(quest);
             OnQuestFailed?.Invoke(questEvent);
         }
-
         private void RegisterListeners(Quest quest)
         {
+            if (_activeQuests.Contains(quest)) return;
+            _activeQuests.Add(quest);
+            
             var handlerInterfaces = quest.GetType()
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && 
@@ -104,12 +119,15 @@ namespace Infrastructure.Handlers
                     list = new List<object>();
                     _eventHandlers[eventType] = list;
                 }
-                list.Add(quest); // quest implements IEventHandler<T>
+                list.Add(quest);
             }
         }
 
         private void UnregisterListeners(Quest quest)
         {
+            if (!_activeQuests.Contains(quest)) return;
+            _activeQuests.Remove(quest);
+            
             var handlerInterfaces = quest.GetType()
                 .GetInterfaces()
                 .Where(i => i.IsGenericType && 
@@ -129,7 +147,7 @@ namespace Infrastructure.Handlers
             }
         }
         
-        private void RaiseEventForQuests<TEvent>(TEvent e) where TEvent : BaseEvent
+        private void NotifyTrackedQuests<TEvent>(TEvent e) where TEvent : BaseEvent
         {
             if (_eventHandlers.TryGetValue(typeof(TEvent), out var handlers))
             {

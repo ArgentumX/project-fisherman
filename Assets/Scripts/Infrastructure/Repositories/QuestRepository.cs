@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Interfaces;
 using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
 using Domain.Models.Entities.Quest;
@@ -13,10 +14,10 @@ namespace Infrastructure.Repositories
         private readonly Dictionary<Guid, Quest> _quests = new();
 
         [Inject]
-        public QuestRepository(IQuestFactory factory, IPlayerRepository playerRepository)
+        public QuestRepository(IQuestFactory factory, IGameContext context)
         {
             // TODO replace fcking create-logic to separate class
-            foreach (var quest in factory.CreateDefault(playerRepository.GetInstance().GetDto())){
+            foreach (var quest in factory.CreateDefault(context)){
                 Save(quest);
             }
         }

@@ -3,6 +3,7 @@ using System.Numerics;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Enums;
+using Domain.Models.Entities.DayCycle;
 using Domain.Models.Entities.Player;
 using Zenject;
 
@@ -24,9 +25,12 @@ namespace Infrastructure.Usecases
             if (!IsPossibleToSleep(player))
                 return false;
             
+            // TODO replace to player method
+            player.StartSleep();
             player.SetPosition(player.GetBedSpawn());
             player.RestoreStamina(this, player.MaxStamina);
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
+            player.EndSleep();
             return true;
         }
 
@@ -41,7 +45,6 @@ namespace Infrastructure.Usecases
             if (timeOfDay is TimeOfDay.Evening or TimeOfDay.Night) {
                 return true;
             }
-
             return false;
         }
         
@@ -55,9 +58,9 @@ namespace Infrastructure.Usecases
         {
             // TODO replace some logic to player model
             player.SetPosition(player.GetBedSpawn());
-            player.EndPassOut();
             player.SetStamina(this, Math.Min(player.MaxStamina, player.Stamina + player.MaxStamina * _restorePercent));
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
+            player.EndPassOut();
         }
     }
 }

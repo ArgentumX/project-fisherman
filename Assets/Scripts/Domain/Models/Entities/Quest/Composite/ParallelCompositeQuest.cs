@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Interfaces;
 using Domain.Models.Entities.Quest.Events;
 
 namespace Domain.Models.Entities.Quest
@@ -9,13 +10,8 @@ namespace Domain.Models.Entities.Quest
     {
         private int _completedCount = 0;
 
-        public ParallelCompositeQuest(string title, IEnumerable<Quest> subQuests, QuestStatus status = QuestStatus.NotStarted)
-            : base(title, subQuests, status)
-        {
-            if (Status == QuestStatus.Active){
-                _completedCount = GetCompletedCount();
-                ValidateSubQuests();
-            }
+        public ParallelCompositeQuest(string title, IGameContext context, IEnumerable<Quest> subQuests)
+            : base(title, context,  subQuests) {
         }
 
         public override void StartQuest()
@@ -27,12 +23,12 @@ namespace Domain.Models.Entities.Quest
         }
 
         public override float Progress => _subQuests.Any() ? _completedCount / (float)_subQuests.Count : 1f;
+        protected override void InitializeOnQuestStart(IGameContext context) {
+        }
 
         protected override void HandleSubQuestCompletedInternal(QuestCompletedEvent e)
         {
-            if (Status != QuestStatus.Active)
-                throw new Exception("Detected quest link leak");
-
+            base.HandleSubQuestCompletedInternal(e);
             _completedCount++;
             if (_completedCount == _subQuests.Count) {
                 _CompleteQuest();
@@ -41,9 +37,7 @@ namespace Domain.Models.Entities.Quest
 
         protected override void HandleSubQuestFailedInternal(QuestFailedEvent e)
         {
-            if (Status != QuestStatus.Active)
-                throw new Exception("Detected quest link leak");
-
+            base.HandleSubQuestFailedInternal(e);
             _FailQuest();
         }
 

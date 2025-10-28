@@ -28,11 +28,11 @@ namespace Domain.Models.Entities.DayCycle
 
         public void UpdateTime(object sender, float deltaTime)
         {
-
+            // TODO deltatime overjump
             CurrentTime += deltaTime;
             if (CurrentTime >= DayLength)
             {
-                CurrentTime = 0;
+                CurrentTime = CurrentTime % DayLength;
                 var newDayEvent = new NewDayEvent(sender, GetDto());
                 OnNewDay?.Invoke(newDayEvent);
             }
@@ -87,14 +87,12 @@ namespace Domain.Models.Entities.DayCycle
         {
             var period = Periods.FirstOrDefault(p => p.Period == timeOfDay);
             if (period == default)
-            {
                 throw new ArgumentException($"Invalid TimeOfDay: {timeOfDay}");
-            }
-            float normalized = (period.Start + period.End) / 2f;
-            CurrentTime = normalized * DayLength;
 
-            var dayCycleChangedEvent = new DayCycleChangedEvent(sender, GetDto());
-            OnDayCycleChanged?.Invoke(dayCycleChangedEvent);
+            float targetNormalized = (period.Start + period.End) / 2f;
+            float targetTime = targetNormalized * DayLength;
+            float deltaTime = DayLength - CurrentTime + targetTime;
+            UpdateTime(sender, deltaTime);
         }
 
         private TimeOfDay GetTimeOfDay()

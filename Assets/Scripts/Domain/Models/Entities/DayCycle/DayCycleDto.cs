@@ -2,7 +2,7 @@
 
 namespace Domain.Models.Entities.DayCycle
 {
-    public record DayCycleDto
+    public struct DayCycleDto
     {
         public float Time { get; set; }
         public TimeOfDay TimeOfDay { get; set; }

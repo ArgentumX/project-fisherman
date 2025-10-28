@@ -4,7 +4,7 @@ namespace Domain.Models.Entities.Quest.Events
 {
     public class QuestCompletedEvent : QuestEvent
     {
-        public QuestCompletedEvent(object sender, Guid questId) : base(sender, questId)
+        public QuestCompletedEvent(object sender, Quest quest) : base(sender, quest)
         {
         }
     }

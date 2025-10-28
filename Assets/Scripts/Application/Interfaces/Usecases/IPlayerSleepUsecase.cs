@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Domain.Models.Entities.DayCycle;
 using Domain.Models.Entities.Player;
 
 namespace Application.Interfaces.Usecases

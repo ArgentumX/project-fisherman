@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Application.Interfaces;
 using Domain.Models.Entities.Quest.Events;
 using ModestTree;
 
@@ -12,8 +13,8 @@ namespace Domain.Models.Entities.Quest
         public IReadOnlyList<Quest> SubQuests => _subQuests.AsReadOnly();
         protected readonly List<Quest> _subQuests;
 
-        protected CompositeQuest(string title, IEnumerable<Quest> subQuests, QuestStatus status = QuestStatus.NotStarted)
-            : base(title, status)
+        protected CompositeQuest(string title, IGameContext context, IEnumerable<Quest> subQuests)
+            : base(title, context)
         {
             // TODO why zenject errors are not displayed in editor?
             _subQuests = subQuests == null ? new List<Quest>() : subQuests.ToList();
@@ -49,10 +50,16 @@ namespace Domain.Models.Entities.Quest
 
         /* Why no RaiseUpdate for these methods?
          Because their implementation decides Fail or Complete or ... Quest,
-          so submethods will raise events anyway.*/ 
-        protected abstract void HandleSubQuestCompletedInternal(QuestCompletedEvent e);
+          so submethods will raise events anyway.*/
+        protected virtual void HandleSubQuestCompletedInternal(QuestCompletedEvent e) {
+            if (Status != QuestStatus.Active)
+                throw new Exception("Detected quest link leak");
+        }
 
-        protected abstract void HandleSubQuestFailedInternal(QuestFailedEvent e);
+        protected virtual void HandleSubQuestFailedInternal(QuestFailedEvent e) {
+            if (Status != QuestStatus.Active)
+                throw new Exception("Detected quest link leak");
+        }
 
         protected virtual void HandleSubQuestUpdated(QuestUpdatedEvent e) {
             RaiseUpdated();

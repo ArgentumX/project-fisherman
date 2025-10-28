@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.EventProviders;
+﻿using Application.Interfaces;
+using Application.Interfaces.EventProviders;
 using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
@@ -25,12 +26,15 @@ namespace Composition
             Container.Bind<IPlayerRepository>().To<PlayerRepository>().AsSingle().NonLazy();
             Container.Bind<IDayCycleRepository>().To<DayCycleRepository>().AsSingle().NonLazy();
             // INIT LAST!!!
+            // depends on PlayerRepo, DayCycleRepo
+            Container.Bind<IGameContext>().To<GameContext>().AsSingle().NonLazy();
             Container.Bind<IQuestRepository>().To<QuestRepository>().AsSingle().NonLazy();
             
             // Usecases
             Container.Bind<IPlayerUsecase>().To<PlayerUsecase>().AsTransient();
             Container.Bind<IDayCycleUsecase>().To<DayCycleUsecase>().AsTransient();
             Container.Bind<IPlayerSleepUsecase>().To<PlayerSleepUsecase>().AsTransient();
+            Container.Bind<IPlayerQuestsUsecase>().To<PlayerQuestsUsecase>().AsTransient();
             
             // Event Providers
             Container.Bind<ITickProvider>().To<TickProvider>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
@@ -39,6 +43,7 @@ namespace Composition
             Container.BindInterfacesAndSelfTo<DayCycleTracker>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PlayerPassOutTracker>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<QuestsTracker>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<QuestsGiver>().AsSingle().NonLazy();
         }
     }
 }

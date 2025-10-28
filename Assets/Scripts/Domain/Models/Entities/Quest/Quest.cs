@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using Application.Interfaces;
 using Domain.Models.Common;
 using Domain.Models.Entities.Quest.Events;
 
@@ -25,10 +25,10 @@ namespace Domain.Models.Entities.Quest
 
         public virtual float Progress => Status == QuestStatus.Completed ? 1f : 0f;
 
-        protected Quest(string title, QuestStatus status = QuestStatus.NotStarted)
-        {
+        protected IGameContext _context;
+        protected Quest(string title, IGameContext context) {
             Title = title;
-            Status = status;
+            _context = context;
         }
 
         public virtual void StartQuest()
@@ -36,17 +36,18 @@ namespace Domain.Models.Entities.Quest
             if (Status != QuestStatus.NotStarted) 
                 throw new InvalidOperationException("Cannot start a quest with a not started status");
             Status = QuestStatus.Active;
-            var questEvent = new QuestStartedEvent(this, Id);
+            var questEvent = new QuestStartedEvent(this, this);
             OnQuestStarted?.Invoke(questEvent);
+            InitializeOnQuestStart(_context);
             RaiseUpdated();
         }
-
+        protected abstract void InitializeOnQuestStart(IGameContext context);
         protected virtual void _FailQuest()
         {
             if (Status == QuestStatus.Failed || Status == QuestStatus.Completed) 
                 throw new InvalidOperationException("Cannot fail a quest with a not Failed|Completed status");
             Status = QuestStatus.Failed;
-            var questEvent = new QuestFailedEvent(this, Id);
+            var questEvent = new QuestFailedEvent(this, this);
             OnQuestFailed?.Invoke(questEvent);
             RaiseUpdated();
         }
@@ -56,14 +57,14 @@ namespace Domain.Models.Entities.Quest
             if (Status == QuestStatus.Failed || Status == QuestStatus.Completed) 
                 throw new InvalidOperationException("Cannot complete a quest with a not Failed|Completed status");
             Status = QuestStatus.Completed;
-            var questEvent = new QuestCompletedEvent(this, Id);
+            var questEvent = new QuestCompletedEvent(this, this);
             OnQuestCompleted?.Invoke(questEvent);
             RaiseUpdated();
         }
 
         protected void RaiseUpdated()
         {
-            var updatedEvent = new QuestUpdatedEvent(this, Id);
+            var updatedEvent = new QuestUpdatedEvent(this, this);
             OnQuestUpdated?.Invoke(updatedEvent);
         }
     }

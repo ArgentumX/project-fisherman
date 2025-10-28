@@ -21,6 +21,7 @@ namespace Domain.Models.Entities.Player
         public PlayerQuestsProgress QuestsProgress { get; } = new();
         public float Stamina => _stamina;
         public float MaxStamina => _maxStamina;
+        public bool IsSleep { get; private set; }
         
         public event Action<PlayerTakeDamageEvent> OnPlayerTakeDamage;
         public event Action<PlayerNotEnoughStaminaEvent> OnPlayerNotEnoughStamina;
@@ -54,6 +55,16 @@ namespace Domain.Models.Entities.Player
             _bedSpawn = spawnPosition;
         }
 
+        public void StartSleep()
+        {
+            IsSleep = true;
+        }
+
+        public void EndSleep()
+        {
+            IsSleep = false;
+        }
+
         public void SetPosition(Vector3 position)
         {
             _position = position;
@@ -61,6 +72,7 @@ namespace Domain.Models.Entities.Player
         }
         public void StartPassOut()
         {
+            StartSleep();
             var e = new PlayerPassOutEvent(this, GetDto(), false);
             OnPassOut?.Invoke(e);
         }
@@ -69,6 +81,7 @@ namespace Domain.Models.Entities.Player
         {
             var e = new PlayerPassOutEvent(this, GetDto(), true);
             OnPassOut?.Invoke(e);
+            EndSleep();
         }
 
         public bool TryConsumeStamina(object sender, float amount)

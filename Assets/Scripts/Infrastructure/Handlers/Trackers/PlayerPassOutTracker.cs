@@ -40,7 +40,11 @@ namespace Infrastructure.Handlers
 
         private void HandleNewHour(NewHourEvent e)
         {
+            
             if (e.Hour >= _playerPassOutHourUp || e.Hour < _playerPassOutHourDown) {
+                
+                if (_player.IsSleep)
+                    return;
                 _playerSleepUsecase.StartPassOut(_player);
             }
         }

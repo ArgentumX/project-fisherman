@@ -6,6 +6,6 @@ namespace Application.Interfaces.Factories
 {
     public interface IQuestFactory
     {
-        List<Quest> CreateDefault(PlayerDto initialData);
+        List<Quest> CreateDefault(IGameContext context);
     }
 }

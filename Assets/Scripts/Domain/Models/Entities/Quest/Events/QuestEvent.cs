@@ -5,10 +5,10 @@ namespace Domain.Models.Entities.Quest.Events
 {
     public class QuestEvent : BaseEvent
     {
-        public Guid QuestId { get; private set; }
-        public QuestEvent(object sender, Guid questId) : base(sender)
+        public Quest Quest { get; }
+        public QuestEvent(object sender, Quest quest) : base(sender)
         {
-            QuestId = questId;
+            Quest = quest;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Models.Common;
+﻿using Application.Interfaces;
+using Domain.Models.Common;
 using Domain.Models.Entities.Player;
 using Domain.Models.Entities.Player.Events;
 
@@ -10,16 +11,18 @@ namespace Domain.Models.Entities.Quest
     {
         public override float Progress { get => _progress; }
         private float _progress;
-        public StaminaQuest(string title, PlayerDto playerDto, QuestStatus status = QuestStatus.NotStarted) : base(title, status) {
-            UpgradeProgressAndTryComplete(playerDto);
+        public StaminaQuest(string title, IGameContext context) : base(title, context) {
         }
-
-
+        
         public void Handle(PlayerStaminaChangedEvent e)
         {
             UpgradeProgressAndTryComplete(e.PlayerDto);
         }
-        
+        protected override void InitializeOnQuestStart(IGameContext context)
+        {
+            UpgradeProgressAndTryComplete(context.PlayerDto);
+        }
+
         private void UpgradeProgressAndTryComplete(PlayerDto source)
         {
             UpdateProgress(source);

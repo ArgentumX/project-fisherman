@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Interfaces;
 using Domain.Models.Common;
 using Domain.Models.Entities.Quest.Events;
 
@@ -10,12 +11,9 @@ namespace Domain.Models.Entities.Quest
     {
         private int _currentIndex = 0;
 
-        public SequentialCompositeQuest(string title, IEnumerable<Quest> subQuests, QuestStatus status = QuestStatus.NotStarted)
-            : base(title, subQuests, status)
+        public SequentialCompositeQuest(string title, IGameContext context, IEnumerable<Quest> subQuests)
+            : base(title, context, subQuests)
         {
-            if (Status == QuestStatus.Active) {
-                _currentIndex = GetFirstActiveIndex();
-            }
         }
 
         public override void StartQuest()
@@ -23,6 +21,7 @@ namespace Domain.Models.Entities.Quest
             base.StartQuest();
             _subQuests[_currentIndex].StartQuest();
         }
+        
 
         public override float Progress => _subQuests.Any() ? _currentIndex / (float)_subQuests.Count : 1f;
 
@@ -31,7 +30,7 @@ namespace Domain.Models.Entities.Quest
             if (Status != QuestStatus.Active)
                 throw new Exception("Detected quest link leak");
 
-            if (e.QuestId != _subQuests[_currentIndex].Id) 
+            if (e.Quest != _subQuests[_currentIndex]) 
                 throw new Exception("Detected corrupted quest");
             
             _currentIndex++;
@@ -41,6 +40,8 @@ namespace Domain.Models.Entities.Quest
             else {
                 _CompleteQuest();
             }
+        }
+        protected override void InitializeOnQuestStart(IGameContext context) {
         }
 
         protected override void HandleSubQuestFailedInternal(QuestFailedEvent e)
