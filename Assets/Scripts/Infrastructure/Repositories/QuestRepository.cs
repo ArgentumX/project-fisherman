@@ -12,16 +12,7 @@ namespace Infrastructure.Repositories
     public class QuestRepository : IQuestRepository
     {
         private readonly Dictionary<Guid, Quest> _quests = new();
-
-        [Inject]
-        public QuestRepository(IQuestFactory factory, IGameContext context)
-        {
-            // TODO replace fcking create-logic to separate class
-            foreach (var quest in factory.CreateDefault(context)){
-                Save(quest);
-            }
-        }
-        
+        public QuestRepository() { }
         public Quest Get(Guid id)
         {
             if (_quests.TryGetValue(id, out var quest))

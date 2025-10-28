@@ -9,14 +9,7 @@ namespace Infrastructure.Repositories
     public class DayCycleRepository : IDayCycleRepository
     {
         private DayCycle _dayCycle;
-
-        [Inject]
-        public DayCycleRepository(IDayCycleFactory dayCycleFactory)
-        {
-            // TODO remove if file exists
-            var dayCycle = dayCycleFactory.CreateDefault();
-            Save(dayCycle);
-        }
+        public DayCycleRepository() { }
         
         public DayCycle GetInstance()
         {

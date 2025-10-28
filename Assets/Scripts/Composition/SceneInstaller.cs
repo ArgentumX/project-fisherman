@@ -25,10 +25,12 @@ namespace Composition
             // Repositories
             Container.Bind<IPlayerRepository>().To<PlayerRepository>().AsSingle().NonLazy();
             Container.Bind<IDayCycleRepository>().To<DayCycleRepository>().AsSingle().NonLazy();
-            // INIT LAST!!!
-            // depends on PlayerRepo, DayCycleRepo
-            Container.Bind<IGameContext>().To<GameContext>().AsSingle().NonLazy();
             Container.Bind<IQuestRepository>().To<QuestRepository>().AsSingle().NonLazy();
+            
+            Container.BindInterfacesAndSelfTo<RepositoriesInitializer>().AsSingle().NonLazy();
+            
+            // GameContext
+            Container.Bind<IGameContext>().To<GameContext>().AsSingle().NonLazy();
             
             // Usecases
             Container.Bind<IPlayerUsecase>().To<PlayerUsecase>().AsTransient();
