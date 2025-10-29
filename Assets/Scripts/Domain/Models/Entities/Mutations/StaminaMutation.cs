@@ -9,6 +9,8 @@ namespace Domain.Models
         public StaminaMutation(float staminaBonus) {
             _staminaBonus = staminaBonus;
         }
+        
+
         public override void Apply(Player player)
         {
             player.UpdateStaminaMax(this, _staminaBonus);
