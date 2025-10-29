@@ -70,17 +70,13 @@ namespace Domain.Models.Entities.Player
         }
 
         public void AddMutation(Mutation mutation) {
-            if (_mutations.Contains(mutation))
-                return;
-            
+            // TODO type filtering
             mutation.Apply(this);
             _mutations.Add(mutation);
         }
 
         public void RemoveMutation(Mutation mutation) {
-            if (!_mutations.Contains(mutation))
-                return;
-            
+            // TODO type filtering
             mutation.Revert(this);
             _mutations.Remove(mutation);
         }

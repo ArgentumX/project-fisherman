@@ -38,6 +38,7 @@ namespace Composition
             Container.Bind<IDayCycleUsecase>().To<DayCycleUsecase>().AsTransient();
             Container.Bind<IPlayerSleepUsecase>().To<PlayerSleepUsecase>().AsTransient();
             Container.Bind<IPlayerQuestsUsecase>().To<PlayerQuestsUsecase>().AsTransient();
+            Container.Bind<IMutationsUsecase>().To<PlayerMutationsUsecase>().AsTransient();
             
             // Event Providers
             Container.Bind<ITickProvider>().To<TickProvider>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
@@ -47,6 +48,7 @@ namespace Composition
             Container.BindInterfacesAndSelfTo<PlayerPassOutTracker>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<QuestsTracker>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<QuestsGiver>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<MutationsGiver>().AsSingle().NonLazy();
         }
     }
 }

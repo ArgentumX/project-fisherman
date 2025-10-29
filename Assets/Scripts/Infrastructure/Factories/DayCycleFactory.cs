@@ -10,8 +10,8 @@ namespace Infrastructure.Factories
         {
             var state = new DayCycleDto
             {
-                Time = 60,
-                DayLength = 120,
+                Time = 30,
+                DayLength = 60,
             };
             return Create(state);
         }
