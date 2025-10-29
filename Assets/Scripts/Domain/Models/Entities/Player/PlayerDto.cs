@@ -6,6 +6,7 @@ namespace Domain.Models.Entities.Player
     {
         public int Health { get; set; }
         public float Stamina { get; set; }
+        public float BaseMaxStamina { get; set; }
         public float MaxStamina { get; set; }
         public Vector3 Position { get; set; }
     }
