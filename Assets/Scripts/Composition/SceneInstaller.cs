@@ -41,14 +41,17 @@ namespace Composition
             Container.Bind<IMutationsUsecase>().To<PlayerMutationsUsecase>().AsTransient();
             
             // Event Providers
-            Container.Bind<ITickProvider>().To<TickProvider>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+            Container.BindInterfacesTo<TickProvider>().AsSingle().NonLazy();
+            Container.Bind<CycleProvider>().AsSingle().NonLazy();
             
-            // Handlers
-            Container.BindInterfacesAndSelfTo<DayCycleTracker>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<PlayerPassOutTracker>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<QuestsTracker>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<QuestsGiver>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<MutationsGiver>().AsSingle().NonLazy();
+            // Givers
+            Container.Bind<QuestsGiver>().AsSingle().NonLazy();
+            Container.Bind<MutationsGiver>().AsSingle().NonLazy();
+            
+            // Trackers
+            Container.Bind<DayCycleTracker>().AsSingle().NonLazy();
+            Container.Bind<PlayerPassOutTracker>().AsSingle().NonLazy();
+            Container.Bind<QuestsTracker>().AsSingle().NonLazy();
         }
     }
 }

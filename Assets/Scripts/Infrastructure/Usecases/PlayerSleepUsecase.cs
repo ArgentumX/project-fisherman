@@ -19,19 +19,13 @@ namespace Infrastructure.Usecases
         {
             _dayCycleRepository = dayCycleRepository;
         }
-        
-        public bool TrySleep(Player player)
-        {
-            if (!IsPossibleToSleep(player))
-                return false;
-            
-            // TODO replace to player method
-            player.StartSleep();
-            player.SetPosition(player.GetBedSpawn());
-            player.RestoreStamina(this, player.MaxStamina);
+        public void StartSleep(Player player) {
+            player.StartSleep(this);
+        }
+
+        public void EndSleep(Player player) {
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
-            player.EndSleep();
-            return true;
+            player.EndSleep(this);
         }
 
         public void SetPlayerBed(Player player, Vector3 bedSpawn)
@@ -48,19 +42,13 @@ namespace Infrastructure.Usecases
             return false;
         }
         
-        public void StartPassOut(Player player)
-        {
-            // TODO pass real bed
-            player.StartPassOut();
+        public void StartPassOut(Player player) {
+            player.StartPassOut(this);
         }
 
-        public void EndPassOut(Player player)
-        {
-            // TODO replace some logic to player model
-            player.SetPosition(player.GetBedSpawn());
-            player.SetStamina(this, Math.Min(player.MaxStamina, player.Stamina + player.MaxStamina * _restorePercent));
+        public void EndPassOut(Player player) {
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
-            player.EndPassOut();
+            player.EndPassOut(this, _restorePercent);
         }
     }
 }

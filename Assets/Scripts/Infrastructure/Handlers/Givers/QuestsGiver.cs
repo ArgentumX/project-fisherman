@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
+using Domain.Models.Common.Events;
 using Domain.Models.Entities.DayCycle;
 using Domain.Models.Entities.DayCycle.Events;
 using Zenject;
@@ -9,34 +10,23 @@ namespace Infrastructure.Handlers
     public class QuestsGiver
     {
         private IPlayerQuestsUsecase _playerQuestsUsecase;
-        private DayCycle _dayCycle;
-        // TODO replace day passed info to GameModel or to some special Service
-        private int _dayPassed = 0;
-        private int _giveQuestsInterval = 1;
+        private CycleProvider _cycleProvider;
         
         [Inject]
-        private QuestsGiver(IPlayerQuestsUsecase playerQuestsUsecase, IDayCycleRepository dayCycleRepository)
+        private QuestsGiver(IPlayerQuestsUsecase playerQuestsUsecase, CycleProvider cycleProvider)
         {
             _playerQuestsUsecase = playerQuestsUsecase;
-            _dayCycle = dayCycleRepository.GetInstance();
-            SubscribeToDayCycle(_dayCycle);
+            _cycleProvider = cycleProvider;
+            Subscribe(cycleProvider);
         }
-        private void SubscribeToDayCycle(DayCycle dayCycle)
+        private void Subscribe(CycleProvider cycleProvider) {
+            cycleProvider.OnNewCycle += HandleNewCycle;
+        }
+        private void Unsubscribe(CycleProvider cycleProvider)
         {
-            dayCycle.OnNewDay += HandleNewDayEvent;
+            cycleProvider.OnNewCycle -= HandleNewCycle;
         }
-        private void UnsubscribeFromDayCycle(DayCycle dayCycle)
-        {
-            dayCycle.OnNewDay -= HandleNewDayEvent;
-        }
-        private void HandleNewDayEvent(NewDayEvent newDayEvent)
-        {
-            _dayPassed++;
-            if (_dayPassed % _giveQuestsInterval == 0)
-                GiveNewQuestsPack();
-        }
-
-        private void GiveNewQuestsPack() {
+        private void HandleNewCycle(NewCycleEvent newCycleEvent) {
             _playerQuestsUsecase.GiveNewQuestPack();
         }
     }

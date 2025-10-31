@@ -6,7 +6,8 @@ namespace Application.Interfaces.Usecases
 {
     public interface IPlayerSleepUsecase
     {
-        bool TrySleep(Player player);
+        void StartSleep(Player player);
+        void EndSleep(Player player);
         bool IsPossibleToSleep(Player player);
         void SetPlayerBed(Player player, Vector3 bedSpawn);
         void StartPassOut(Player player);

@@ -26,7 +26,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook.Quests
 
         private void Start()
         {
-            // TODO create QuestUI (Quest quest), which will subscribe on other quests
+            // TODO create QuestUI Element (Quest quest), which will subscribe on single quest
             _trackedQuests = new List<Quest>(_questRepository.GetAll());
             foreach (var quest in _trackedQuests)
             {

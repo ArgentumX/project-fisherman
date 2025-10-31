@@ -53,19 +53,18 @@ namespace Domain.Models.Entities.Player
             OnPlayerTakeDamage?.Invoke(damageEvent);
         }
         
-        // TODO Move to constructor? (Bed is required for player)
-        public void SetBed(Vector3 spawnPosition)
-        {
+        public void SetBed(Vector3 spawnPosition) {
             _bedSpawn = spawnPosition;
         }
-
-        public void StartSleep()
-        {
+        
+        public void StartSleep(object sender) {
             IsSleep = true;
         }
 
-        public void EndSleep()
+        public void EndSleep(object sender)
         {
+            SetPosition(GetBedSpawn());
+            RestoreStamina(this, MaxStamina);
             IsSleep = false;
         }
 
@@ -98,18 +97,20 @@ namespace Domain.Models.Entities.Player
             _position = position;
             OnPlayerSetPosition?.Invoke(new PlayerSetPositionEvent(this, GetDto()));
         }
-        public void StartPassOut()
+        public void StartPassOut(object sender)
         {
-            StartSleep();
+            IsSleep = true;
             var e = new PlayerPassOutEvent(this, GetDto(), false);
             OnPassOut?.Invoke(e);
         }
 
-        public void EndPassOut()
+        public void EndPassOut(object sender, float restorePercent)
         {
+            SetPosition(GetBedSpawn());
+            SetStamina(this, Math.Min(MaxStamina, Stamina + MaxStamina * restorePercent));
             var e = new PlayerPassOutEvent(this, GetDto(), true);
             OnPassOut?.Invoke(e);
-            EndSleep();
+            IsSleep = false;
         }
 
         public bool TryConsumeStamina(object sender, float amount)

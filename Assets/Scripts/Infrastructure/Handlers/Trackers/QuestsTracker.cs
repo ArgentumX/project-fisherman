@@ -146,7 +146,7 @@ namespace Infrastructure.Handlers
             }
         }
         
-        private void NotifyTrackedQuests<TEvent>(TEvent e) where TEvent : BaseEvent
+        private void NotifyTrackedQuests<TEvent>(TEvent e) where TEvent : Event
         {
             if (_eventHandlers.TryGetValue(typeof(TEvent), out var handlers))
             {

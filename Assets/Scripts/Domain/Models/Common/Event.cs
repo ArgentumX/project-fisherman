@@ -1,9 +1,9 @@
 ﻿namespace Domain.Models.Common
 {
-    public abstract class BaseEvent
+    public abstract class Event
     {
         public object Sender { get; private set; }
-        protected BaseEvent(object sender)
+        public Event(object sender)
         {
             Sender = sender;
         }

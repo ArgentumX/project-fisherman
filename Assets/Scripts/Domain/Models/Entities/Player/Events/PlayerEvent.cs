@@ -2,7 +2,7 @@
 
 namespace Domain.Models.Entities.Player.Events
 {
-    public class PlayerEvent : BaseEvent
+    public class PlayerEvent : Event
     {
         public PlayerDto PlayerDto { get; private set; }
         

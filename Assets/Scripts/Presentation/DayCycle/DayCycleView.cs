@@ -16,7 +16,6 @@ namespace Presentation.DayCyclePresentation
         [SerializeField, Range(0, 1)] private float displayTimeProgress;
         private Vector3 _defaultLightAngles;
         
-        // TODO create Initializers system
         [Inject]
         private void Construct(IDayCycleRepository dayCycleRepository)
         {

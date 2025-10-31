@@ -2,7 +2,7 @@
 
 namespace Domain.Models.Entities.DayCycle.Events
 {
-    public class DayCycleEvent : BaseEvent
+    public class DayCycleEvent : Event
     {
         public DayCycleDto DayCycleDto { get; private set; }
         

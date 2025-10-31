@@ -18,8 +18,8 @@ namespace Presentation.Sleep
         [Inject]
         private void Construct(IPlayerSleepUsecase playerPlayerSleepUsecase, IPlayerRepository playerRepository)
         {
+            // TODO wrong bed init
             _playerPlayerSleepUsecase = playerPlayerSleepUsecase;
-            // TODO remove this bed init setting, should be factory?
             _playerPlayerSleepUsecase.SetPlayerBed(playerRepository.GetInstance(), spawnTransform.position.ToSystemVector3());
         }
         
@@ -28,7 +28,9 @@ namespace Presentation.Sleep
             switch (interactor.GetModel())
             {
                 case Player player:
-                    _playerPlayerSleepUsecase.TrySleep(player);
+                    _playerPlayerSleepUsecase.StartSleep(player);
+                    // TODO await animation
+                    _playerPlayerSleepUsecase.EndSleep(player);
                     break;
                 default:
                     throw new System.NotImplementedException();

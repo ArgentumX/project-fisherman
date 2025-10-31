@@ -14,7 +14,6 @@ namespace Infrastructure.Handlers
         private Player _player;
         private int _playerPassOutHourDown = 6;
         private int _playerPassOutHourUp = 23;
-
         [Inject]
         public PlayerPassOutTracker(
             IDayCycleRepository dayCycleRepository, 
@@ -42,11 +41,11 @@ namespace Infrastructure.Handlers
         {
             
             if (e.Hour >= _playerPassOutHourUp || e.Hour < _playerPassOutHourDown) {
-                
                 if (_player.IsSleep)
                     return;
                 _playerSleepUsecase.StartPassOut(_player);
             }
+            
         }
     }
 }

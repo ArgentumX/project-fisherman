@@ -24,13 +24,11 @@ namespace Infrastructure.Handlers
             Subscribe();
         }
 
-        private void Subscribe()
-        {
+        private void Subscribe() {
             _tickProvider.OnViewTick += HandleTick;
         }
 
-        private void Unsubscribe()
-        {
+        private void Unsubscribe() {
             // TODO How to unsubscribe this
             _tickProvider.OnViewTick -= HandleTick;
         }
