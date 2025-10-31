@@ -87,6 +87,9 @@ namespace Domain.Models.Entities.Player
             }
         }
 
+        public IReadOnlyCollection<Mutation> GetMutations() {
+            return _mutations.AsReadOnly();
+        }
         public void UpdatePosition(Vector3 newPosition) {
             _position = newPosition;
         }

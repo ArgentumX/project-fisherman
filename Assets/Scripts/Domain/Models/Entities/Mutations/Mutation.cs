@@ -7,5 +7,6 @@ namespace Domain.Models
     {
         public abstract void Apply(Player player);
         public abstract void Revert(Player player);
+        public abstract string GetDescription();
     }
 }
