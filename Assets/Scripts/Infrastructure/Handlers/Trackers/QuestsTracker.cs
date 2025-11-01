@@ -156,7 +156,5 @@ namespace Infrastructure.Handlers
                 }
             }
         }
-        
-        // TODO lets make QuestsTracker : IEventHandler<T_1>, ..., IEventHandler<T_N> and raise error if quest try register on unhandled events
     }
 }

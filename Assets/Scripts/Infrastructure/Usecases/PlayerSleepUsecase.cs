@@ -5,19 +5,20 @@ using Application.Interfaces.Usecases;
 using Domain.Enums;
 using Domain.Models.Entities.DayCycle;
 using Domain.Models.Entities.Player;
+using Infrastructure.Settings;
 using Zenject;
 
 namespace Infrastructure.Usecases
 {
     public class PlayerSleepUsecase : IPlayerSleepUsecase
     {
-        private IDayCycleRepository _dayCycleRepository;
-        // TODO move to settings?
-        private float _restorePercent = 0.5f;
+        private readonly IDayCycleRepository _dayCycleRepository;
+        private readonly GameSettings _gameSettings;
         [Inject]
-        public PlayerSleepUsecase(IDayCycleRepository dayCycleRepository)
+        public PlayerSleepUsecase(IDayCycleRepository dayCycleRepository, GameSettings gameSettings)
         {
             _dayCycleRepository = dayCycleRepository;
+            _gameSettings = gameSettings;
         }
         public void StartSleep(Player player) {
             player.StartSleep(this);
@@ -48,7 +49,7 @@ namespace Infrastructure.Usecases
 
         public void EndPassOut(Player player) {
             _dayCycleRepository.GetInstance().SetTimeOfDay(this, TimeOfDay.Morning);
-            player.EndPassOut(this, _restorePercent);
+            player.EndPassOut(this, _gameSettings.PassOutRestorePercent);
         }
     }
 }

@@ -7,7 +7,9 @@ using Infrastructure;
 using Infrastructure.Factories;
 using Infrastructure.Handlers;
 using Infrastructure.Repositories;
+using Infrastructure.Settings;
 using Infrastructure.Usecases;
+using UnityEngine;
 using Zenject;
 
 
@@ -15,8 +17,10 @@ namespace Composition
 {
     public class SceneInstaller : MonoInstaller
     {
+        [SerializeField] private GameSettings gameSettings;
         public override void InstallBindings()
         {
+            Container.BindInstance(gameSettings).AsSingle();;
             // Factories
             Container.Bind<IDayCycleFactory>().To<DayCycleFactory>().AsTransient();
             Container.Bind<IPlayerFactory>().To<PlayerFactory>().AsTransient();

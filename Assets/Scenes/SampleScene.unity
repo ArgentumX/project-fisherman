@@ -1501,6 +1501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab39728d96497882f1968fb6f1b1a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Composition.SceneInstaller
+  gameSettings: {fileID: 11400000, guid: 70a4114cd5e537841abdebe4df6192ce, type: 2}
 --- !u!114 &675348800
 MonoBehaviour:
   m_ObjectHideFlags: 0

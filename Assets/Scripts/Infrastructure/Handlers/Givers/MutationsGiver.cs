@@ -12,8 +12,6 @@ namespace Infrastructure.Handlers
         private IMutationsUsecase _mutationUsecase;
         private CycleProvider _cycleProvider;
         
-        // TODO create cycle service with event OnNewCycle
-        
         private MutationsGiver(
             IPlayerRepository playerRepository,
             IMutationsUsecase mutationsUsecase, 

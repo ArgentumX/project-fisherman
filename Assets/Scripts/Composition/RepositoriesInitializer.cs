@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
+using Infrastructure.Settings;
 using Zenject;
 
 namespace Composition
