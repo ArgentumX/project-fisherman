@@ -1,3 +1,4 @@
+using System;
 using Domain.Models.Entities.Player;
 using Presentation.Common;
 using TMPro;
@@ -41,5 +42,9 @@ public class Mirror : OutlineInteractable
     public override bool CanInteract<T>(IInteractor<T> interactor)
     {
         return true;
+    }
+
+    private void Reset() {
+        base.ResetBase();
     }
 }

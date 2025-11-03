@@ -9,7 +9,10 @@ using Infrastructure.Handlers;
 using Infrastructure.Repositories;
 using Infrastructure.Settings;
 using Infrastructure.Usecases;
+using Presentation.PlayerPresentation.Controllers;
+using Presentation.Services;
 using UnityEngine;
+using Yarn.Unity;
 using Zenject;
 
 
@@ -18,9 +21,15 @@ namespace Composition
     public class SceneInstaller : MonoInstaller
     {
         [SerializeField] private GameSettings gameSettings;
+        [SerializeField] private DialogueRunner dialogueRunner;
+        // TODO evolved input system should fix this shit 
+        [SerializeField] private MovementController movementController;
+        [SerializeField] private InteractionController interactionController;
         public override void InstallBindings()
         {
             Container.BindInstance(gameSettings).AsSingle();;
+            Container.BindInstance(dialogueRunner).AsSingle();
+            
             // Factories
             Container.Bind<IDayCycleFactory>().To<DayCycleFactory>().AsTransient();
             Container.Bind<IPlayerFactory>().To<PlayerFactory>().AsTransient();
@@ -56,6 +65,13 @@ namespace Composition
             Container.Bind<DayCycleTracker>().AsSingle().NonLazy();
             Container.Bind<PlayerPassOutTracker>().AsSingle().NonLazy();
             Container.Bind<QuestsTracker>().AsSingle().NonLazy();
+            
+            // Presenter
+            // * Controllers
+            Container.BindInstance(movementController).AsSingle();
+            Container.BindInstance(interactionController).AsSingle();
+            // * Services
+            Container.BindInterfacesAndSelfTo<DialogBlocker>().AsSingle().NonLazy();
         }
     }
 }

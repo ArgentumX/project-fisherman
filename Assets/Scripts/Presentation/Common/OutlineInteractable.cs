@@ -27,6 +27,7 @@ namespace Presentation.Common
 
         public virtual void OnHoverExit<T>(IInteractor<T> interactor) where T : BaseModel
         {
+            if (!outline) return;
             outline.enabled = false;
         }
         public abstract void Interact<T>(IInteractor<T> interactor) where T : BaseModel;
@@ -46,6 +47,7 @@ namespace Presentation.Common
             if (outline == null) {
                 outline = GetComponent<Outline>();
                 outline.OutlineColor = canInteractColor;
+                outline.enabled = false;
             }
         }
     }

@@ -20,6 +20,7 @@ namespace Presentation.PlayerPresentation.UI.Notebook
 
         private void Awake()
         {
+            // TODO use evolved input controller
             _playerActionMap = inputActions.FindActionMap("Player");
             var playerUIActionMap = inputActions.FindActionMap("PlayerUI");
             _notebookAction = playerUIActionMap.FindAction("Notebook");

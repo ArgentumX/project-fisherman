@@ -24,20 +24,34 @@ namespace Presentation.PlayerPresentation.Controllers
         private IInteractable _currentTarget;
         private float _hoverCheckInterval = 0.1f; // Check every 0.1 seconds
         private float _lastHoverCheckTime;
+        private IPlayerRepository _playerRepository;
         
         private InputAction _interactAction;
         private Coroutine _holdCoroutine;
         private bool _isHolding = false;
+
+        public void Block() {
+            enabled = false;
+        }
+
+        public void Unblock() {
+            enabled = true;
+        }
         
         private void Awake()
         {
             _interactAction = inputActions.FindActionMap("Player").FindAction("Interact");
         }
 
+        private void Start() {
+            _model = _playerRepository.GetInstance();
+            mainCamera = Camera.main;
+        }
+        
         [Inject]
         private void Construct(IPlayerRepository repository)
         {
-            _model = repository.GetInstance();
+            _playerRepository = repository;
         }
 
         private void OnEnable()
@@ -52,11 +66,7 @@ namespace Presentation.PlayerPresentation.Controllers
             _interactAction.Disable();
             _interactAction.started -= OnInteractStarted;
             _interactAction.canceled -= OnInteractCanceled;
-            CancelHold();
-        }
-        private void Start()
-        {
-            mainCamera = Camera.main;
+            CancelAll();
         }
 
         public Player GetModel() => _model;
@@ -100,8 +110,8 @@ namespace Presentation.PlayerPresentation.Controllers
             if (_currentTarget != null)
             {
                 _currentTarget.OnHoverExit(this);
-                CancelHold();
                 _currentTarget = null;
+                CancelHold();
                 UpdateInteractionText();
             }
         }
@@ -122,6 +132,14 @@ namespace Presentation.PlayerPresentation.Controllers
         private void OnInteractCanceled(InputAction.CallbackContext context)
         {
             CancelHold();
+            UpdateInteractionText();
+        }
+
+        private void CancelAll()
+        {
+            CancelHold();
+            CancelHover();
+            UpdateInteractionText();
         }
         private void CancelHold()
         {
@@ -132,7 +150,12 @@ namespace Presentation.PlayerPresentation.Controllers
             }
             _isHolding = false;
             interactionDisplay.DisableHoldBar();
-            UpdateInteractionText();
+        }
+
+        private void CancelHover() {
+            if (_currentTarget == null) return;
+            _currentTarget.OnHoverExit(this);
+            _currentTarget = null;
         }
         
         private IEnumerator HoldInteractionRoutine()

@@ -23,23 +23,28 @@ namespace Presentation.PlayerPresentation.Controllers
         [Header("Input Actions")]
         private CharacterController _characterController;
         [SerializeField] private InputActionAsset _inputActions;
+        private InputActionMap _playerInputMap;
         private InputAction _moveAction;
         private InputAction _lookAction;
         private InputAction _jumpAction;
         private InputAction _sprintAction;
         private Vector2 _moveInput;
         private Vector2 _lookInput;
+        public void Block() {
+            enabled = false;
+        }
 
+        public void Unblock() {
+            enabled = true;
+        }
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            var playerActionMap = _inputActions.FindActionMap("Player");
-            _moveAction = playerActionMap.FindAction("Move");
-            _lookAction = playerActionMap.FindAction("Look");
-            _jumpAction = playerActionMap.FindAction("Jump");
-            _sprintAction = playerActionMap.FindAction("Sprint");
-
-            Cursor.lockState = CursorLockMode.Locked;
+            _playerInputMap = _inputActions.FindActionMap("Player");
+            _moveAction = _playerInputMap.FindAction("Move");
+            _lookAction = _playerInputMap.FindAction("Look");
+            _jumpAction = _playerInputMap.FindAction("Jump");
+            _sprintAction = _playerInputMap.FindAction("Sprint");
         }
 
         private void OnEnable()
@@ -48,6 +53,7 @@ namespace Presentation.PlayerPresentation.Controllers
             _lookAction.Enable();
             _jumpAction.Enable();
             _sprintAction.Enable();
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void OnDisable()
@@ -56,6 +62,7 @@ namespace Presentation.PlayerPresentation.Controllers
             _lookAction.Disable();
             _jumpAction.Disable();
             _sprintAction.Disable();
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         private void Update()

@@ -8,7 +8,6 @@ namespace Infrastructure.Repositories
     public class PlayerRepository : IPlayerRepository
     {
         private Player _player;
-        public PlayerRepository() { }
 
         public Player GetInstance()
         {
