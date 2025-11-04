@@ -7,5 +7,6 @@ namespace Application.Interfaces.Usecases
     {
         public void AddRandomMutation(Player player);
         public void AddMutation(Player player, MutationType mutationType);
+        public void RaiseMutatioStages(Player player);
     }
 }

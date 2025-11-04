@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Application.Interfaces.Repositories;
 using Domain.Models.Entities.Player;
 using Presentation.Common;
@@ -28,7 +27,7 @@ namespace Presentation.PlayerPresentation.Controllers
         
         private InputAction _interactAction;
         private Coroutine _holdCoroutine;
-        private bool _isHolding = false;
+        private bool _isHolding;
 
         public void Block() {
             enabled = false;

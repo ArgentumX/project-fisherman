@@ -32,6 +32,7 @@ namespace Infrastructure.Handlers
         }
         private void HandleNewCycle(NewCycleEvent newCycleEvent) {
             var player = _playerRepository.GetInstance();
+            _mutationUsecase.RaiseMutatioStages(player);
             _mutationUsecase.AddRandomMutation(player);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Factories;
+﻿using System;
+using Application.Interfaces.Factories;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Usecases;
 using Domain.Models;
@@ -25,9 +26,15 @@ namespace Infrastructure.Usecases
             player.AddMutation(mutation);
         }
 
-        private MutationType SelectRandomMutationType() {
-            // TODO selecting
-            return MutationType.Stamina; 
+        public void RaiseMutatioStages(Player player) {
+            foreach (var mutation in player.GetMutations()) {
+                mutation.RaiseStage();
+            }
+        }
+
+        private MutationType SelectRandomMutationType()
+        { var values = (MutationType[])Enum.GetValues(typeof(MutationType));
+            return values[UnityEngine.Random.Range(0, values.Length)];
         }
 
     }

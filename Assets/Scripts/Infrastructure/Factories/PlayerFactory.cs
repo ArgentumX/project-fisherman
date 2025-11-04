@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.Factories;
-using Domain.Models;
 using Domain.Models.Entities.Player;
 
 namespace Infrastructure.Factories
@@ -21,7 +20,6 @@ namespace Infrastructure.Factories
         public Player Create(PlayerDto dto)
         {
             var player = new Player(dto);
-            player.AddMutation(new StaminaMutation(150));
             return player;
         }
     }

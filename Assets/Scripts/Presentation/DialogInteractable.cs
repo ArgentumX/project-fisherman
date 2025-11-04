@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Presentation
 {
-    public class Dialog : OutlineInteractable
+    public class DialogInteractable : OutlineInteractable
     {
         [SerializeField] private string dialogueNode;
         private DialogueRunner _dialogueRunner;

@@ -6,7 +6,7 @@ namespace Domain.Models
     {
         private readonly float _staminaBonus;
 
-        public StaminaMutation(float staminaBonus) {
+        public StaminaMutation(float staminaBonus, MutationStage stage) : base(stage) {
             _staminaBonus = staminaBonus;
         }
         
