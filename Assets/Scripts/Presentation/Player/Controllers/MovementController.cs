@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 namespace Presentation.PlayerPresentation.Controllers
 {
@@ -22,29 +23,33 @@ namespace Presentation.PlayerPresentation.Controllers
 
         [Header("Input Actions")]
         private CharacterController _characterController;
-        [SerializeField] private InputActionAsset _inputActions;
-        private InputActionMap _playerInputMap;
         private InputAction _moveAction;
         private InputAction _lookAction;
         private InputAction _jumpAction;
         private InputAction _sprintAction;
         private Vector2 _moveInput;
         private Vector2 _lookInput;
-        public void Block() {
+        public void Disable() {
             enabled = false;
         }
 
-        public void Unblock() {
+        public void Enable() {
             enabled = true;
         }
-        private void Awake()
-        {
+        
+        private void Awake() {
             _characterController = GetComponent<CharacterController>();
-            _playerInputMap = _inputActions.FindActionMap("Player");
-            _moveAction = _playerInputMap.FindAction("Move");
-            _lookAction = _playerInputMap.FindAction("Look");
-            _jumpAction = _playerInputMap.FindAction("Jump");
-            _sprintAction = _playerInputMap.FindAction("Sprint");
+        }
+        
+        [Inject]
+        private void Construct(PlayerInputController playerInputController)
+        {
+            var inputActions = playerInputController.InputActionsAsset;
+            var playerInputMap = inputActions.FindActionMap("Player");
+            _moveAction = playerInputMap.FindAction("Move");
+            _lookAction = playerInputMap.FindAction("Look");
+            _jumpAction = playerInputMap.FindAction("Jump");
+            _sprintAction = playerInputMap.FindAction("Sprint");
         }
 
         private void OnEnable()

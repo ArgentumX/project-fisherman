@@ -29,11 +29,11 @@ namespace Presentation.PlayerPresentation.Controllers
         private Coroutine _holdCoroutine;
         private bool _isHolding;
 
-        public void Block() {
+        public void Disable() {
             enabled = false;
         }
 
-        public void Unblock() {
+        public void Enable() {
             enabled = true;
         }
         

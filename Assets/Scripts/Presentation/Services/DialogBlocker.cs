@@ -8,18 +8,15 @@ namespace Presentation.Services
     public class DialogBlocker : IInitializable, IDisposable
     {
         private readonly DialogueRunner _dialogueRunner;
-        private readonly MovementController _movementController;
-        private readonly InteractionController _interactionController;
+        private readonly PlayerInputController _controller;
 
         public DialogBlocker(
             DialogueRunner dialogueRunner,
-            MovementController movementController,
-            InteractionController interactionController
+            PlayerInputController controller
             ) {
             // TODO use evolved input controller
             _dialogueRunner = dialogueRunner;
-            _movementController = movementController;
-            _interactionController = interactionController;
+            _controller = controller;
         }
 
         public void Initialize()
@@ -35,13 +32,13 @@ namespace Presentation.Services
         }
 
         private void BlockMovements() {
-            _movementController.Block();
-            _interactionController.Block();
+            _controller.MovementController.Disable();
+            _controller.InteractionController.Disable();
+        }
+        private void UnblockMovements() {
+            _controller.MovementController.Enable();
+            _controller.InteractionController.Enable();
         }
 
-        private void UnblockMovements() {
-            _movementController.Unblock();
-            _interactionController.Unblock();
-        }
     }
 }

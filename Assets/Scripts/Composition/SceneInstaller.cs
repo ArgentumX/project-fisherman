@@ -11,6 +11,7 @@ using Infrastructure.Settings;
 using Infrastructure.Usecases;
 using Presentation.PlayerPresentation.Controllers;
 using Presentation.Services;
+using UnityEditor;
 using UnityEngine;
 using Yarn.Unity;
 using Zenject;
@@ -22,9 +23,7 @@ namespace Composition
     {
         [SerializeField] private GameSettings gameSettings;
         [SerializeField] private DialogueRunner dialogueRunner;
-        // TODO evolved input system should fix this shit 
-        [SerializeField] private MovementController movementController;
-        [SerializeField] private InteractionController interactionController;
+        [SerializeField] private PlayerInputController playerInputController;
         public override void InstallBindings()
         {
             Container.BindInstance(gameSettings).AsSingle();;
@@ -68,8 +67,7 @@ namespace Composition
             
             // Presenter
             // * Controllers
-            Container.BindInstance(movementController).AsSingle();
-            Container.BindInstance(interactionController).AsSingle();
+            Container.BindInstance(playerInputController).AsSingle();
             // * Services
             Container.BindInterfacesAndSelfTo<DialogBlocker>().AsSingle().NonLazy();
         }
